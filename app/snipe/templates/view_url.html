@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
+
+{% block head %}
+  <title>View Url</title>
+{% endblock %}
+
+{% block body %}
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+              {% for message in messages %}
+                <div role="alert" class="alert"><p class="alert-msg"> {{ message }} </p></div>
+              {% endfor %}
+
+          {% endif %}
+        
+        {% endwith %}
+
+      <nav class="navbar">
+
+        <div class="logo">Snipe</div>
+     
+          <ul class="nav-links">
+        
+          <div class="menu">
+              {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('snipe.index') }}">Home</a></li>
+              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+              {%  else %}
+              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+              {% endif %}
+          </div>
+          </ul>
+      </nav>
+
+        
+      <section class="hero" style="padding: 100px 20px;">
+        <center>
+          <h1 class="description2">Your URL</h1>
+        </center>
+        {% if current_user.is_authenticated %}
+        {% if url %}
+          {% if url.user_id == current_user.email %}
+          <div class="card" style="border-bottom: 0px;">
+            
+            <a href="{{ url.url }}" style="color: black; text-decoration: none;" >
+                <h1 class="card-text" style="color: black; text-decoration: none; font-size: 26px;">{{ url.url_title }}</h1>
+            </a>
+            <h5 style="color: #1b1b1b; font-size: 17px; font-weight: lighter; margin-bottom: 4px;">Long URL - {{url.url}}</h5>
+            
+            <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
+            <h5 class="card-title"  style="font-weight: lighter;"><div class="engagements"><p class="engagement-clicks">{{ url.clicks }}</p></div> Total engagements</h5>
+            <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 18px; margin-top: 5px;"><p class="short-url-history">{{ url.short_url }}</a>
+            </p>
+            <button onclick="myFunction()" id="copy-btn" data-clipboard-target="#new_url" class="copy-btn2">Copy</button>
+            <a href="" class="qrcode_create"><p class="qrcode_click">Create QR code</a>
+          </div>
+          {% endif %}
+        {% endif %}
+        {% endif %}
+    </section>
+             <!--App script-->
+           <script src="./app.js"></script>
+        
+{% endblock %}

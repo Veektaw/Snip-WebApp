@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
+
+{% block head %}
+  <title>Home</title>
+{% endblock %}
+
+{% block body %}
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+              {% for message in messages %}
+                <div role="alert" class="alert"><p class="alert-msg"> {{ message }} </p></div>
+              {% endfor %}
+
+          {% endif %}
+        
+        {% endwith %}
+
+      <nav class="navbar">
+
+        <div class="logo">Snipe</div>
+     
+          <ul class="nav-links">
+        
+          <div class="menu">
+              {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+              <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+              {%  else %}
+              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+              <li><a href="{{ url_for('snipe.about') }}">About</a></li>
+              {% endif %}
+          </div>
+          </ul>
+      </nav>
+
+
+             <!-- link input and shorten button -->
+      <h1 class="description">Create short URL</h1>
+      <form action="{{ url_for('snipe.create') }}" method="POST">
+        <input type="text" id="text-field-content-row" name="url" placeholder="Enter your long URL here . . ." id="input-field" required/>
+          <button type="submit" id="shorten" class="content-row button">Shorten URL</button>
+          <button type="button" id="clear-btn" class="content-row button">Clear</button>
+      </form>
+
+               <!-- Output and copy -->
+        
+          <div id="output-div">
+             <div class="content-row" id="new-url-label">Your short URL: {{new_url}}</div>
+                 <div id="new-url" class="content-row"></div>
+                 <button type="button" id="copy-btn" data-clipboard-target="#new-url" class="content-row button">Copy</button>
+              </div>
+          <div class="" id="error-div">
+                  <p class="content-row" id="error-text"></p>
+               </div>
+        
+
+
+              <h1 class="description">Create custom URL</h1>
+              <form action="{{ url_for('snipe.custom') }}" method="POST" class="form2">
+                <input type="text" id="text-field-content-row2" name="long_url" placeholder="Enter your long URL here . . ." id="input-field" required/>
+                <input type="text" id="text-field-content-row2" name="url" placeholder="Enter your custom URL here . . ." id="input-field" required/>
+                  <button type="submit" id="shorten" class="content-row button">Custom URL</button>
+                  <button type="button" id="clear-btn" class="content-row button">Clear</button>
+              </form>
+        
+                       <!-- Output and copy -->
+                
+                  <div id="output-div">
+                     <div class="content-row" id="new-url-label">Your custom URL: {{new_url}}</div>
+                         <div id="new-url" class="content-row"></div>
+                         <button type="button" id="copy-btn" data-clipboard-target="#new-url" class="content-row button">Copy</button>
+                      </div>
+                  <div class="" id="error-div">
+                          <p class="content-row" id="error-text"></p>
+                       </div>
+
+        
+
+             <section class="hero" style="padding: 100px 20px;">
+              <center>
+                <h1 class="description2">Your URL history</h1>
+              </center>
+      {% if current_user.is_authenticated %}
+              {% if urls %}
+                  {% for url in urls %}
+                    {% if url.user_id==current_user.email %}
+                    <div class="card">
+                      
+                      <a href="/view/{{ url.id }}" style="color: black; text-decoration: none;" >
+                        <h1 class="card-text" style="color: black; text-decoration: none; font-size: 26px;">{{ url.url_title }}</h1>
+                      </a>
+                      
+                      <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
+                          <h5 class="card-title" style="font-weight: lighter;"><div class="engagements"><p class="engagement-clicks" style="font-weight: lighter;">{{url.clicks}}</p></div> Total engagements</h5>
+                          <a href="{{url.url}}" id="url_click" style="color: #ff7518; font-size: 18px; margin-top: 5px; font-weight: lighter;"><p class="short-url-history" style="font-weight: lighter;">{{url.short_url}}</a>
+                          </p>
+                        <button onclick="myFunction()" id="copy-btn" data-clipboard-target="#new_url" class="copy-btn2">Copy</button>
+                        <!-- <a href="" class="qrcode_create"><p class="qrcode_click">Create QR code</a> -->
+                        </p>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+          {% else %}
+              <h1>Please login to see your urls</h1>
+        
+      {% endif %}
+          </section>
+             <!--App script-->
+           <script src="./app.js"></script>
+        
+{% endblock %}
+
