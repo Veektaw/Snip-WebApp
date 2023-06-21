@@ -36,14 +36,14 @@ class URLCreator:
     
     
     @classmethod
-    def custom_url(cls, url, custom_url):
-            new_url = f"https://{request.host}/{custom_url}"
-            does_url_exist = Url.check_url(new_url)
+    def custom_url(cls, long_url, custom_url_entry):
+            custom_url = f"https://{request.host}/{custom_url_entry}"
+            does_url_exist = Url.check_url(custom_url)
         
             if does_url_exist:
                 URLCreator.custom_url()
         
-            return new_url
+            return custom_url
     
 
     @classmethod

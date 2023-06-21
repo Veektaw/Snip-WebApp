@@ -106,10 +106,11 @@ ul {
     font-size: 20px;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 6px;
     float: right;
    }
    .menu li:hover {
-    background-color: white;
+    background-color: #f1f1f1;
     color: white;
     border-radius: 5px;
     transition: 0.3s ease;
@@ -124,19 +125,19 @@ ul {
   
   body {
     font-family: Arial;
-    padding: 20px;
     background: #f1f1f1;
   }
   
   .navbar {
     justify-content: space-between;
+    margin-top: 0;
     padding: 20px;
     width: 100%;
+    position: fixed;
     min-height: 10px;
-
     position: relative;
-    color: white;
-    margin-bottom: 70px;
+    background-color: white;
+    margin-bottom: 120px;
    }
 
   .header {
@@ -232,6 +233,25 @@ ul {
   font-family: "Avenir", sans-serif;
 }
 
+.top-layer1 {
+  background-color: white;
+  border-radius: 30px;
+  margin: auto;
+  width: 85%;
+  height: 350px;
+  margin-bottom: 20px;
+}
+
+.top-layer2 {
+  background-color: white;
+  border-radius: 30px;
+  margin: auto;
+  width: 85%;
+  height: 400px;
+  margin-bottom: 20px;
+}
+
+
 #header-div {
   width: 60%;
   margin: auto;
@@ -250,31 +270,34 @@ ul {
 }
 
 .description {
-  margin-left: 13%;
-  margin-bottom: 30px;
+  font-size: 150%;
+  padding-top: 10px;
+  margin-left: 10%;
+  margin-bottom: 20px;
   color: #2b5cd8;
 }
 
 .description2 {
-  margin-top: 0px;
-  margin-bottom: 30px;
+  font-size: 100%;
+  padding-top: 10px;
+  margin-bottom: 20px;
   color: #2b5cd8;
 }
 
 form {
-  display: flex;
+  display: block;
   flex-direction: row;
   width: 80%;
-  margin-left: 16%;
-  margin-bottom: 60px;
+  margin: auto;
+  margin-bottom: 40px;
 }
 
 .form2{
-    display: flex;
+    display: block;
     flex-direction: row;
     width: 80%;
     margin-left: 9.5%;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 
@@ -290,16 +313,28 @@ form {
 #output-div {
   display: flex;
   flex-direction: row;
-  width: 50%;
+  width: 75%;
   justify-content: space-between;
-  background-color: #f5f6f7;
-  margin-left: auto;
-  margin-right: 25%;
+  background-color: #f1f1f1;
+  margin: auto;
   padding: 5px;
-  border: 3px solid #f5f6f7;
-  border-radius: 4px;
+  border: 3px solid #f1f1f1;
+  border-radius: 10px;
   align-items: center;
   margin-bottom: 100px;
+}
+
+.new-url-result {
+  display: inline;
+  word-wrap:break-word;
+  overflow: hidden;
+  font-size: 90%;
+  color: #ff7518;
+  font-size: 95%;
+  font-weight: lighter;
+  margin-left: 0px;
+  margin-top: 0;
+  
 }
 
 #error-div {
@@ -312,7 +347,7 @@ form {
 }
 
 .content-row {
-  display: flex;
+  display: block;
 }
 
 input[type=text] {
@@ -324,6 +359,10 @@ input[type=text] {
 }
 
 
+.top-buttons {
+  margin: auto;
+}
+
 .button {
   background-color: #2b5cd8;
   color: white;
@@ -333,9 +372,9 @@ input[type=text] {
   border: 1px solid #2b5cd8;
   border-radius: 4px;
   padding: 10px;
-  margin-left: 5px;
-  margin-right: 5px;
-  display: block;
+  margin: auto;
+  margin-top: 10px;
+  display: inline;
   transition-duration: 0.2s;
 }
 
@@ -351,7 +390,7 @@ input[type=text] {
 }
 
 #new-url {
-  display: flex;
+  display: inline;
   color: black;
   padding: 5px;
   font-size: 24px;
@@ -359,13 +398,14 @@ input[type=text] {
 
 #new-url-label {
   font-size: 18px;
-  display: flex;
+  font-size: 93%;
 
 }
 
-#text-field-content-row2{
-  width: 40%;
+.text-field-content-row2{
+  width: 70%;
   margin: auto;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -375,7 +415,6 @@ input[type=text] {
 
 
 section.hero {
-  background-color: #f5f6f7;
   padding: 100px 20px;
   color: #1b1b1b;
   font-size: 24px;
@@ -384,8 +423,8 @@ section.hero {
 }
 
 .card {
-  width: 70%;
-  padding: 15px;
+  width: 80%;
+  padding: 10px;
   border-radius: 0px;
   background-color: white;
   margin: auto;
@@ -399,8 +438,10 @@ section.hero {
 }
 
 .card-text {
+  word-wrap:break-word;
   margin-bottom: 20px;
   font-size: 32px;
+  width: 60%;
 }
 
 input#myInput {
@@ -438,6 +479,56 @@ input#myInput {
   background-color: #0f3288;
 }
 
+
+.copy-btn3 {
+  overflow:inherit;
+  background-color: #2b5cd8;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: #2b5cd8 solid;
+  border-radius: 4px;
+  padding: 6px;
+  margin-left: 0px;
+  margin-right: 6px;
+  margin-top: 0;
+  display: inline;
+  transition-duration: 0.2s;
+}
+
+.copy-btn3:hover {
+  background-color: #0f3288;
+}
+
+.copy-div {
+  display: inline-block;
+  margin-left: 2px;
+}
+
+.delete-btn2 {
+  background-color: #8f3131;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 6px;
+  margin-left: 0px;
+  margin-right: 6px;
+  margin-top: 10px;
+  display: inline;
+  transition-duration: 0.2s;
+}
+
+.delete-btn2:hover {
+  background-color: #670909;
+}
+
+
+
+
 .short-url-history {
   margin-bottom: 15px;
   font-weight: lighter;
@@ -474,4 +565,28 @@ input#myInput {
 
 .qrcode_create:hover {
   color: #0f3288;
+}
+
+.paginate-look {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination-link {
+  margin: 0 0px;
+  text-align: center
+}
+
+.current-page {
+  font-weight: bolder;
+  text-align: center
+}
+
+.page-num1 {
+  margin: auto;
+  display: flex;
+  text-align: center
 }
