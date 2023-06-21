@@ -8,17 +8,21 @@
 
 {% block body %}
 
-        {% with messages = get_flashed_messages() %}
+      {% with messages = get_flashed_messages() %}
 
-            {% if messages %}
+        {% if messages %}
 
-              {% for message in messages %}
-                <div role="alert" class="alert"><p class="alert-msg"> {{ message }} </p></div>
-              {% endfor %}
+          {% for message in messages %}
 
-          {% endif %}
+              <div role="alert" class="alert {% if 'error' in message.lower() %}error{% endif %}">
+              <p class="alert-msg">{{ message }}</p>
+            </div>
+
+          {% endfor %}
+
+        {% endif %}
         
-        {% endwith %}
+      {% endwith %}
 
       <nav class="navbar">
 
@@ -80,9 +84,9 @@
             
               <!-- Output and copy -->
               <div id="output-div">
-                <div class="content-row" id="new-url-label">Your custom URL - <p class="new-url-result" id="custom-url-created">{{custom_url_created}}</p></div>
+                <div class="content-row" id="custom-url-label">Your custom URL - <p class="custom-url-result" id="custom-url-created">{{custom_url_created}}</p></div>
                 <div class="copy-div">
-                  <button type="button" id="copy-btn" class="copy-btn3" data-clipboard-target="#custom-url-created" class="content-row button">Copy</button>
+                  <button type="button" id="copy-btn1" class="copy-btn4" data-clipboard-target="#custom-url-created" class="content-row button">Copy</button>
                 </div>
               </div>
               <div class="" id="error-div">
@@ -122,7 +126,7 @@
                             <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
                               <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
                           {% endif %}
-                             <button id="copy-btn" data-clipboard-target="#short_url" class="copy-btn2">Copy</button>
+                          <button class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
                                       <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
                       </div>
 

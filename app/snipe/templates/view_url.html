@@ -64,7 +64,7 @@
                 <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
                 <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
             {% endif %}
-                <button onclick="myFunction()" id="copy-btn" data-clipboard-target="#new_url" class="copy-btn2">Copy</button>
+            <button id="copy-btn" class="copy-btn2" data-clipboard-target="#new_url">Copy</button>
                 <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
                 <a href="{{ url_for('snipe.generate_qr_code_url', id=url.id) }}" class="qrcode_create"><p class="qrcode_click">Create QR code</p></a>
                 
@@ -74,6 +74,7 @@
         {% endif %}
     </section>
              <!--App script-->
-           <script src="./app.js"></script>
+             <script src="{{url_for('static', filename='copy.js')}}"></script>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
         
 {% endblock %}
