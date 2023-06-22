@@ -1,0 +1,15 @@
+#country-circles {
+  margin-top: 9px;
+  margin-bottom: 4px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin-left: 17%;
+  }
+  
+  /* Example styling */
+  #country-circles {
+    border: 4px solid #2b5cd8;
+  }
+  

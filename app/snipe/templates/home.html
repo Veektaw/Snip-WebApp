@@ -8,28 +8,30 @@
 
 {% block body %}
 
-      {% with messages = get_flashed_messages() %}
-
-        {% if messages %}
-
-          {% for message in messages %}
-
-              <div role="alert" class="alert {% if 'error' in message.lower() %}error{% endif %}">
-              <p class="alert-msg">{{ message }}</p>
-            </div>
-
-          {% endfor %}
-
-        {% endif %}
-        
-      {% endwith %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% set error_displayed = false %}
+    {% for message in messages %}
+      {% if 'error' in message.lower() and not error_displayed %}
+        {% set error_displayed = true %}
+        <div role="alert" class="alert error">
+          <p class="alert-msg">{{ message }}</p>
+        </div>
+      {% elif 'error' not in message.lower() %}
+        <div role="alert" class="alert normal">
+          <p class="alert-msg">{{ message }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
       <nav class="navbar">
 
         <div class="logo">Snipe</div>
      
           <ul class="nav-links">
-        
+       
           <div class="menu">
               {% if current_user.is_authenticated %}
               <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
@@ -42,7 +44,6 @@
           </div>
           </ul>
       </nav>
-
 
              <!-- link input and shorten button -->
       <div class="top-layer1"><h1 class="description">Create short URL</h1>
@@ -115,46 +116,56 @@
                         </a>
                         <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
                         <h5 class="card-title" style="font-weight: lighter;">
-                        <div class="engagements">
-                          <p class="engagement-clicks" style="font-weight: lighter;">{{ url.clicks }}</p>
-                        </div>Total engagements
+                          <div class="engagements">
+                            <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
+                          </div>
+                          Total engagements
                         </h5>
-                          {% if url.custom_url %}
-                            <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                               <p class="short-url-history" style="font-weight: lighter;">{{ url.custom_url }}</a></p>
-                          {% else %}
-                            <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                              <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
-                          {% endif %}
-                          <button class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
-                                      <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
+                        
+                        {% if url.custom_url %}
+                        <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                          <p class="short-url-history" style="font-weight: lighter;">{{ url.custom_url }}</a></p>
+                      {% else %}
+                        <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                          <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
+                      {% endif %}
+                      <button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
+                              <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
                       </div>
 
                       {% endif %}
                     {% endfor %}
+                    <div class="pagination-container">
                       {% if urls.has_prev %}
-                                
-                        <div class="page-num1"><a href="{{ url_for('snipe.index', page=urls.prev_num) }}" class="pagination-link"> < Previous</a></div>
+                      <div class="page-num1">
+                        <a href="{{ url_for('snipe.index', page=urls.prev_num) }}" class="pagination-link"> &lt; Previous</a>
+                      </div>
                       {% endif %}
+                    
+                      <div class="pagination-numbers">
                         {% for num in urls.iter_pages() %}
-
                           {% if num %}
-
                             {% if num == urls.page %}
-                              <div class="page-num1"><span class="pagination-link current-page">{{ num }}</span></div>
+                            <div class="page-num1 current-page">
+                              <span class="pagination-link">{{ num }}</span>
+                            </div>
                             {% else %}
-                                    
-                              <div class="page-num1"><a href="{{ url_for('snipe.index', page=num) }}" class="pagination-link" style="text-align: center;">{{ num }}</a></div>
+                            <div class="page-num1">
+                              <a href="{{ url_for('snipe.index', page=num) }}" class="pagination-link">{{ num }}</a>
+                            </div>
                             {% endif %}
-
                           {% endif %}
-
-               {% endfor %}
-
-                          {% if urls.has_next %}
-                            <div class="page-num1"><a href="{{ url_for('snipe.index', page=urls.next_num) }}" class="pagination-link">Next > </a></div>
-                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    
+                      {% if urls.has_next %}
+                      <div class="page-num1">
+                        <a href="{{ url_for('snipe.index', page=urls.next_num) }}" class="pagination-link">Next &gt;</a>
+                      </div>
                       {% endif %}
+                    </div>                    
+                  {% endif %}
+                    
                 {% else %}
                               <center>
                                 <h1>Please login to see your urls</h1>
@@ -165,7 +176,7 @@
                           
              <!--App script-->
              <script src="{{url_for('static', filename='app.js')}}"></script>
+             <script src="{{url_for('static', filename='engage.js')}}"></script>
              <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-
 
 {% endblock %}

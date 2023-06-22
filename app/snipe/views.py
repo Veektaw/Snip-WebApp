@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
-from .models import Url
+from .models import Url, Country
 from .utils import db, bcrypt, limiter, cache, login_manager
 from sqlalchemy import desc
 from app.helpers.view import URLCreator, generate_qr_code
@@ -34,14 +34,13 @@ def index():
 @snipe.route('/create', methods=['POST', 'GET'])
 @limiter.limit("5 per minute")
 @login_required
-
 def create():
     if request.method == 'POST':
         url = request.form.get('url')
-        
+
         existing_url = Url.query.filter_by(url=url, user_id=current_user.email).first()
         if existing_url:
-            flash("Short Url already exists", category="error")
+            flash("Short URL already exists", category="error")
             return redirect(url_for('snipe.index'))
 
         if URLCreator.is_valid_url(url):
@@ -62,7 +61,10 @@ def create():
                 db.session.rollback()
                 return render_template('error.html')
 
-    return redirect(url_for('snipe.index', new_url=short_url))
+            return redirect(url_for('snipe.index', new_url=short_url))
+
+    return render_template('create.html')
+
 
 
 @snipe.route('/custom', methods=['POST', 'GET'])
@@ -110,7 +112,7 @@ def get_url_by_id(id):
 
 
 
-@snipe.route('/delete/<int:id>/', methods=['POST', 'GET'])
+@snipe.route('/delete/<int:id>/', methods=['POST', 'GET', 'DELETE'])
 @login_required
 def delete_url(id):
     
@@ -146,14 +148,21 @@ def generate_qr_code_url(id):
 
 
 
-
-
-@snipe.route('/click/<string:short_url>/')
+@snipe.route('/click/<int:id>/', methods=['POST', 'GET'])
 @cache.cached(timeout=50)
-def redirect_url(short_url):
-    url = Url.query.filter_by(short_url=short_url).first()
+def redirect_url(id):
+    url = Url.query.get(id)
     if url:
         url.clicks += 1
         db.session.commit()
         return redirect(url.url)
     return 'URL not found.'
+
+
+@snipe.route('/country', methods=['POST', 'GET'])
+def save_country():
+    country_code = request.form.get('country_code')
+    click = Country(country_code=country_code)
+    click.save()
+
+    return 'Country saved successfully'

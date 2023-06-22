@@ -1,6 +1,4 @@
 from datetime import datetime
-import string
-from random import choices
 from .utils import db, login_manager, bcrypt
 from flask_login import UserMixin
 
@@ -67,3 +65,26 @@ class Url(db.Model):
     def check_url(cls , url):
         url_exists = cls.query.filter_by(short_url = url).first()
         return True if url_exists else False
+    
+    
+    
+class Country(db.Model):
+    
+    __tablename__  = 'countries'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    country_code = db.Column(db.String(100), nullable=False)
+    
+    def __repr__(self):
+        return f"<url {self.id}>"
+    
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        
+        
+    @classmethod
+    def get_by_id(cls, id):
+        url = db.session.get(Url, id)
+        return url

@@ -1,24 +1,10 @@
 {% extends 'base.html' %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
-
 {% block head %}
   <title>View Url</title>
 {% endblock %}
 
 {% block body %}
-
-        {% with messages = get_flashed_messages() %}
-
-            {% if messages %}
-
-              {% for message in messages %}
-                <div role="alert" class="alert"><p class="alert-msg"> {{ message }} </p></div>
-              {% endfor %}
-
-          {% endif %}
-        
-        {% endwith %}
 
       <nav class="navbar">
 
@@ -39,7 +25,7 @@
       </nav>
 
         
-    <section class="hero" style="padding: 100px 20px;">
+    <section class="hero" style="padding: 0px 20px;">
         <center>
           <h1 class="description2">Your URL</h1>
         </center>
@@ -51,19 +37,28 @@
             <a href="{{ url.url }}" style="color: black; text-decoration: none;" >
                 <h1 class="card-text" style="color: black; text-decoration: none; font-size: 26px;">{{ url.url_title }}</h1>
             </a>
-            <h5 style="color: #1b1b1b; font-size: 15px; font-weight: lighter; margin-bottom: 4px; width: 50%; word-wrap:break-word;">Long URL - {{url.url}}</h5>
+            <h5 style="color: #2b5cd8; font-size: 15px; font-weight: lighter; margin-bottom: 4px; width: 50%; word-wrap:break-word;"><strong style="color: #1b1b1b;">Long URL</strong> - {{url.url}}</h5>
             
             <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
-            <h5 class="card-title"  style="font-weight: lighter;"><div class="engagements"><p class="engagement-clicks">{{ url.clicks }}</p></div> Total engagements</h5>
+            <h5 class="card-title"  style="font-weight: lighter;">
+              <div class="engagements">
+                <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
+              </div> Total engagements
+            </h5>
+
+            <h5 class="card-title" style="font-weight: lighter; margin-top: 3px;">
+              List of countries:
+              <ul id="country-list"></ul>
+            </h5>
 
             {% if url.custom_url %}
-                <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                <p class="short-url-history" style="font-weight: lighter;">{{ url.custom_url }}</a></p>
+                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                    <p class="short-url-history" style="font-weight: lighter;"><strong style="color: #1b1b1b;">Custom URL</strong> - {{ url.custom_url }}</a></p>
             {% else %}
-
-                <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
+                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                    <p class="short-url-history" style="font-weight: lighter;"><strong style="color: #1b1b1b;">Short URL</strong> - {{ url.short_url }}</a></p>
             {% endif %}
+
             <button id="copy-btn" class="copy-btn2" data-clipboard-target="#new_url">Copy</button>
                 <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
                 <a href="{{ url_for('snipe.generate_qr_code_url', id=url.id) }}" class="qrcode_create"><p class="qrcode_click">Create QR code</p></a>
@@ -75,6 +70,7 @@
     </section>
              <!--App script-->
              <script src="{{url_for('static', filename='copy.js')}}"></script>
+             <script src="{{url_for('static', filename='engage.js')}}"></script>
              <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
         
 {% endblock %}
