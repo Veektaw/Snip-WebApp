@@ -6,13 +6,11 @@
 
 {% block body %}
 
-      <nav class="navbar">
-
+<nav class="navbar">
+        <img src="../static/images/pngwing.com.png">
         <div class="logo">Snipe</div>
-     
           <ul class="nav-links">
-        
-          <div class="menu">
+            <div class="menu">
               {% if current_user.is_authenticated %}
               <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
               <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
@@ -51,14 +49,15 @@
               <ul id="country-list"></ul>
             </h5>
 
+            
             {% if url.custom_url %}
-                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                    <p class="short-url-history" style="font-weight: lighter;"><strong style="color: #1b1b1b;">Custom URL</strong> - {{ url.custom_url }}</a></p>
+                <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                <p class="short-url-history" style="font-weight: lighter;">{{ url.custom_url }}</a></p>
             {% else %}
-                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                    <p class="short-url-history" style="font-weight: lighter;"><strong style="color: #1b1b1b;">Short URL</strong> - {{ url.short_url }}</a></p>
-            {% endif %}
 
+                <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
+            {% endif %}
             <button id="copy-btn" class="copy-btn2" data-clipboard-target="#new_url">Copy</button>
                 <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
                 <a href="{{ url_for('snipe.generate_qr_code_url', id=url.id) }}" class="qrcode_create"><p class="qrcode_click">Create QR code</p></a>
@@ -69,8 +68,8 @@
         {% endif %}
     </section>
              <!--App script-->
-             <script src="{{url_for('static', filename='copy.js')}}"></script>
-             <script src="{{url_for('static', filename='engage.js')}}"></script>
+             <script src="{{url_for('static', filename='js/copy.js')}}"></script>
+             <script src="{{url_for('static', filename='js/engage.js')}}"></script>
              <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
         
 {% endblock %}

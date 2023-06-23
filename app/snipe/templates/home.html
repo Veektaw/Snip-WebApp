@@ -27,16 +27,18 @@
 {% endwith %}
 
 <nav class="navbar">
+  <img src="../static/images/pngwing.com.png">
   <div class="logo">Snipe</div>
   <ul class="nav-links">
     <div class="menu">
       {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('snipe.about') }}">About</a></li>
       <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+      
       {% else %}
       <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
       <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+      <li><a href="{{ url_for('snipe.about') }}">About</a></li>
       {% endif %}
     </div>
   </ul>
@@ -115,16 +117,16 @@
             </h5>
 
             {% if url.custom_url %}
-  <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-    <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.custom_url }}</p>
-  </a>
-{% else %}
-  <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-    <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.short_url }}</p>
-  </a>
-{% endif %}
+                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                  <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.custom_url }}</p>
+                </a>
+            {% else %}
+                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                  <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.short_url }}</p>
+                </a>
+            {% endif %}
 
-<button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
+        <button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
 
             <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
           </div>
@@ -172,8 +174,8 @@
 
 
 <!-- App script -->
-<script src="{{ url_for('static', filename='app.js') }}"></script>
-<script src="{{ url_for('static', filename='engage.js') }}"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/engage.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
 {% endblock %}

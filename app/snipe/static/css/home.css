@@ -104,7 +104,7 @@ ul {
 
    .menu {
     display: flex;
-    gap: 1em;
+    gap: 0.5em;
     font-size: 20px;
     margin-right: auto;
     margin-left: auto;
@@ -142,6 +142,13 @@ ul {
     margin-bottom: 120px;
    }
 
+   .navbar img {
+    display: inline-block;
+    vertical-align: middle;
+    background: none;
+    width: 50px;
+  }
+
   .header {
     padding: 30px;
     font-size: 40px;
@@ -170,7 +177,7 @@ ul {
 
 .top-layer1 {
   background-color: white;
-  border-radius: 30px;
+  border-radius: 17px;
   margin: auto;
   width: 85%;
   height: 350px;
@@ -179,7 +186,7 @@ ul {
 
 .top-layer2 {
   background-color: white;
-  border-radius: 30px;
+  border-radius: 17px;
   margin: auto;
   width: 85%;
   height: 400px;
@@ -592,4 +599,18 @@ input#myInput {
 .current-page .pagination-link {
   color: #2b5cd8;
   font-weight: lighter;
+}
+
+
+.copy-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2b5cd8;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
 }

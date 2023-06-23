@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
+
+{% block head %}
+  <title>Home</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% set error_displayed = false %}
+    {% for message in messages %}
+      {% if 'error' in message.lower() and not error_displayed %}
+        {% set error_displayed = true %}
+        <div role="alert" class="alert error">
+          <p class="alert-msg">{{ message }}</p>
+        </div>
+      {% elif 'error' not in message.lower() %}
+        <div role="alert" class="alert normal">
+          <p class="alert-msg">{{ message }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar">
+    <img src="../static/images/pngwing.com.png">
+    <div class="logo">Snipe</div>
+    <ul class="nav-links">
+        <div class="menu">
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+            {% endif %}
+        </div>
+  </ul>
+</nav>
+<center>
+    <div class="profile-image">
+      <img src="../static/images/00100sPORTRAIT_00100_BURST20181005110856440_COVER~2.jpg" alt="Profile Image">
+    </div>
+  </center>
+
+<center>
+  <div class="my-info">
+    <p class="intro">My name is Victor Iyayi. I'm a Junior Backend Engineer with 2 years of experience.<br>I'm open to more roles, to expand my knowledge.</p>
+    <p class="contact-info">Email - veektaw@gmail.com or Iyayi.ose.victor@gmail.com<br>Phone - 0706 345 8587</p>
+  </div>
+</center>
+  
+
+{% endblock %}

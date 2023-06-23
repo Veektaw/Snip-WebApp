@@ -178,3 +178,12 @@ def save_country():
     click.save()
 
     return 'Country saved successfully'
+
+
+@snipe.route('/about', methods=['POST', 'GET'])
+@login_required
+@limiter.limit("5 per minute")
+@cache.cached(timeout=50)
+def about():
+    
+    return render_template('about.html')
