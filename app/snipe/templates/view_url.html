@@ -14,7 +14,7 @@
         
           <div class="menu">
               {% if current_user.is_authenticated %}
-              <li><a href="{{ url_for('snipe.index') }}">Home</a></li>
+              <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
               <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
               {%  else %}
               <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>

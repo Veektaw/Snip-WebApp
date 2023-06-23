@@ -4,21 +4,25 @@ from .utils import db, bcrypt, limiter, cache, login_manager
 from sqlalchemy import desc
 from app.helpers.view import URLCreator, generate_qr_code
 from flask_caching import Cache
-from flask_limiter import Limiter
 from flask_jwt_extended import get_jwt_identity
 from flask_limiter.util import get_remote_address
 from flask_login import login_required, current_user
 import qrcode
-from io import BytesIO
 import io
-import os
 
 
 snipe = Blueprint('snipe', __name__)
 
 
+
 @snipe.route('/')
 def index():
+    return render_template('frontIndex.html')
+
+
+@snipe.route('/home')
+@login_required
+def home():
     page = request.args.get('page', 1, type=int)
     per_page = 5 
 
@@ -41,7 +45,7 @@ def create():
         existing_url = Url.query.filter_by(url=url, user_id=current_user.email).first()
         if existing_url:
             flash("Short URL already exists", category="error")
-            return redirect(url_for('snipe.index'))
+            return redirect(url_for('snipe.home'))
 
         if URLCreator.is_valid_url(url):
             url_title = URLCreator.extract_url_data(url)
@@ -61,7 +65,7 @@ def create():
                 db.session.rollback()
                 return render_template('error.html')
 
-            return redirect(url_for('snipe.index', new_url=short_url))
+            return redirect(url_for('snipe.home', new_url=short_url))
 
     return render_template('create.html')
 
@@ -78,7 +82,7 @@ def custom():
         existing_url = Url.query.filter_by(url=long_url, user_id=current_user.email).first()
         if existing_url:
             flash("Custom URL already exists", category="error")
-            return redirect(url_for('snipe.index'))
+            return redirect(url_for('snipe.home'))
 
         if URLCreator.is_valid_url(long_url):
             url_title = URLCreator.extract_url_data(long_url)
@@ -98,13 +102,15 @@ def custom():
                 db.session.rollback()
                 return render_template('error.html')
 
-    return redirect(url_for('snipe.index', custom_url_created=custom_url))
+    return redirect(url_for('snipe.homepage', custom_url_created=custom_url))
 
 
 
 
 @snipe.route('/view/<int:id>/', methods=["GET", "POST"])
 @login_required
+@limiter.limit("5 per minute")
+@cache.cached(timeout=50)
 def get_url_by_id(id):
 
     url = Url.get_by_id(id)
@@ -113,6 +119,7 @@ def get_url_by_id(id):
 
 
 @snipe.route('/delete/<int:id>/', methods=['POST', 'GET', 'DELETE'])
+@limiter.limit("5 per minute")
 @login_required
 def delete_url(id):
     
@@ -122,11 +129,13 @@ def delete_url(id):
         db.session.commit()
         flash("URL deleted successfully")
         
-    return redirect(url_for('snipe.index'))
+    return redirect(url_for('snipe.home'))
 
 
 
 @snipe.route('/qrcode/<int:id>/', methods=['POST', 'GET'])
+@login_required
+@limiter.limit("5 per minute")
 def generate_qr_code_url(id):
     url = Url.get_by_id(id)
     
@@ -149,6 +158,8 @@ def generate_qr_code_url(id):
 
 
 @snipe.route('/click/<int:id>/', methods=['POST', 'GET'])
+@login_required
+@limiter.limit("5 per minute")
 @cache.cached(timeout=50)
 def redirect_url(id):
     url = Url.query.get(id)
@@ -160,6 +171,7 @@ def redirect_url(id):
 
 
 @snipe.route('/country', methods=['POST', 'GET'])
+@login_required
 def save_country():
     country_code = request.form.get('country_code')
     click = Country(country_code=country_code)

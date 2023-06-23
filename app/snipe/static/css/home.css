@@ -108,7 +108,7 @@ ul {
     font-size: 20px;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 6px;
+    margin-top: 7px;
     float: right;
    }
    .menu li:hover {
@@ -156,77 +156,10 @@ ul {
 }
 
 
-/* .alert-msg {
-  padding-top: 12px;
-}
-
-   .alert {
-    border-radius: 10px;
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-    height: 40px;
-    margin-bottom: 10px;
-    background-color: #c4e9b8;
-    font-weight: bolder;
-    color: #48683f;
-    text-align: center;
-   }
-
-
-   .alert {
-    -moz-animation: cssAnimation 0s ease-in 5s forwards;
-    
-    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
-
-    -o-animation: cssAnimation 0s ease-in 5s forwards;
-   
-    animation: cssAnimation 0s ease-in 5s forwards;
-    -webkit-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-}
-@keyframes cssAnimation {
-    to {
-        width:0;
-        height:0;
-        overflow:hidden;
-    }
-}
-@-webkit-keyframes cssAnimation {
-    to {
-        width:0;
-        height:0;
-        visibility:hidden;
-    }
-} */
-
-
-
 .dig {
   font-size: medium;
   font-weight: lighter;
 }
-
-
-  /* .blink {
-    color:red;
-    text-align: center;
-    animation: animate 1.5s linear infinite;
- } 
-  
- @keyframes animate{
-   0%{
-     opacity: 0;
-   }
-   50%{
-     opacity: 0.7;
-   }
-   100%{
-     opacity: 0;
-   }
- } */
-
-
 
   
  main {

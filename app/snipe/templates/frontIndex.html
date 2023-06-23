@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head %}
+  <title>Index</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% set error_displayed = false %}
+    {% for message in messages %}
+      {% if 'error' in message.lower() and not error_displayed %}
+        {% set error_displayed = true %}
+        <div role="alert" class="alert error">
+          <p class="alert-msg">{{ message }}</p>
+        </div>
+      {% elif 'error' not in message.lower() %}
+        <div role="alert" class="alert normal">
+          <p class="alert-msg">{{ message }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<nav class="navbar" style="margin-bottom: 50px;">
+  <div class="logo">Snipe</div>
+  <ul class="nav-links">
+    <div class="menu">
+      {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+      {% else %}
+      <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+      <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+      {% endif %}
+    </div>
+  </ul>
+</nav>
+
+<center>
+    <div class="container">
+      <div class="slide">
+        <h1 class="text1">Create short Links</h1>
+        <img class="frontpage-pic1" src="../static/undraw_link_shortener_mvf6.png">
+      </div>
+      <div class="slide">
+        <h1 class="text2">Share</h1>
+        <img class="frontpage-pic2" src="../static/undraw_Share_link_re_54rx.png">
+      </div>
+    </div>
+    <div class="slide">
+      <h1 class="text3">Succeed</h1>
+      <img class="frontpage-pic3" src="../static/undraw_Happy_announcement_re_tsm0.png">
+    </div>
+    <div class="top-buttons">
+      <button type="submit" id="blink" class="content-row button" style="margin-top: 40px;">Get started</button>
+    </div>
+  </center>
+  
+  
+    <script src="{{ url_for('static', filename='pop.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+{% endblock %}

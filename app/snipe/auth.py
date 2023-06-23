@@ -55,7 +55,7 @@ def login():
     if user and check_password_hash(user.password, password):
         flash(f'Success!! Welcome {email}')
         login_user(user)
-        return redirect(url_for('snipe.index'))
+        return redirect(url_for('snipe.home'))
     
     if user and not check_password_hash(user.password, password):
         flash("Credentials do not match", category="error")

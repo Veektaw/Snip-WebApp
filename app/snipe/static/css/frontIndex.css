@@ -1,0 +1,111 @@
+body {
+    background-color: white;
+}
+
+@keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .text1,
+  .frontpage-pic1 {
+    opacity: 0;
+    animation-name: slideIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-delay: 1s;
+  }
+  
+  .frontpage-pic1, .frontpage-pic2, .frontpage-pic3 {
+    width: 220px;
+  }
+  
+.text1, .text2, .text3 {
+    color: #2b5cd8;
+}
+
+.text2, .text3 {
+    margin-top: 20px;
+}
+
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .text2,
+  .frontpage-pic2 {
+    opacity: 0;
+    animation-name: slideIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-delay: 2.5s;
+  }
+  
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .text3,
+  .frontpage-pic3 {
+    opacity: 0;
+    animation-name: slideIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-delay: 4s;
+  }
+  
+
+#blink {
+    color:white;
+    text-align: center;
+    animation: animate 1.5s linear infinite;
+    animation-delay: 5s;
+ } 
+  
+ @keyframes animate{
+   0%{
+     opacity: 0;
+   }
+   50%{
+     opacity: 0.7;
+   }
+   100%{
+     opacity: 0;
+   }
+ }
+
+
+ .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2b5cd8;
+    padding: 20px;
+    color: white;
+    border: 1px solid black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+  }

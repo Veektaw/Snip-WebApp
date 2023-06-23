@@ -26,157 +26,154 @@
   {% endif %}
 {% endwith %}
 
-      <nav class="navbar">
+<nav class="navbar">
+  <div class="logo">Snipe</div>
+  <ul class="nav-links">
+    <div class="menu">
+      {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+      {% else %}
+      <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+      <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
+      {% endif %}
+    </div>
+  </ul>
+</nav>
 
-        <div class="logo">Snipe</div>
-     
-          <ul class="nav-links">
-       
-          <div class="menu">
-              {% if current_user.is_authenticated %}
-              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-              <li><a href="{{ url_for('snipe.create') }}">About</a></li>
-              {%  else %}
-              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
-              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-              <li><a href="{{ url_for('snipe.create') }}">About</a></li>
-              {% endif %}
+<div class="top-layer1">
+  <h1 class="description">Create short URL</h1>
+  <form action="{{ url_for('snipe.create') }}" method="POST">
+    <center>
+      <input type="text" class="text-field-content-row" name="url" placeholder="Enter your long URL here . . ." id="input-field" required/>
+    </center>
+    <div class="top-buttons">
+      <center>
+        <button type="submit" id="shorten" class="content-row button">Shorten URL</button>
+        <button type="button" id="clear-btn" class="content-row button">Clear</button>
+      </center>
+    </div>
+  </form>
+
+  <!-- Output and copy -->
+  <div id="output-div">
+    <div class="content-row" id="new-url-label">Your short URL - <p class="new-url-result">{{new_url}}</p></div>
+    <div class="copy-div">
+      <button type="button" id="copy-btn" class="copy-btn3" data-clipboard-target="#new-url">Copy</button>
+    </div>
+  </div>
+  <div id="error-div">
+    <p class="content-row" id="error-text"></p>
+  </div>
+</div>
+
+<div class="top-layer2">
+  <h1 class="description">Create custom URL</h1>
+  <form action="{{ url_for('snipe.custom') }}" method="POST" class="form2">
+    <input type="text" class="text-field-content-row2" name="long_url" placeholder="Enter your long URL here . . ." id="input-field" required/>
+    <input type="text" class="text-field-content-row2" name="custom_url_entry" placeholder="Enter your custom URL here . . ." id="custom-input-field" required style="margin-bottom: 0px;"/>
+    <center>
+      <button type="submit" id="shorten" class="content-row button">Custom URL</button>
+      <button type="button" id="clear-btn2" class="content-row button">Clear</button>
+    </center>
+  </form>
+
+  <!-- Output and copy -->
+  <div id="output-div">
+    <div class="content-row" id="custom-url-label">Your custom URL - <p class="custom-url-result" id="custom-url-created">{{custom_url_created}}</p></div>
+    <div class="copy-div">
+      <button type="button" id="copy-btn1" class="copy-btn4" data-clipboard-target="#custom-url-created" class="content-row button">Copy</button>
+    </div>
+  </div>
+  <div class="" id="error-div">
+    <p class="content-row" id="error-text"></p>
+  </div>
+</div>
+
+<!-- ...previous code... -->
+
+<section class="hero" style="padding: 30px 20px;">
+  <center>
+    <h1 class="description2">Your URL history</h1>
+  </center>
+
+  {% if current_user.is_authenticated %}
+    {% if urls %}
+      {% for url in urls.items %}
+        {% if url.user_id == current_user.email %}
+          <div class="card">
+            <a href="/view/{{ url.id }}" style="color: black; text-decoration: none;">
+              <h1 class="card-text" style="color: black; text-decoration: none; font-size: 70%; word-wrap:break-word;">{{ url.url_title }}</h1>
+            </a>
+            <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
+            <h5 class="card-title" style="font-weight: lighter;">
+              <div class="engagements">
+                <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
+              </div>
+              Total engagements
+            </h5>
+
+            {% if url.custom_url %}
+  <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+    <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.custom_url }}</p>
+  </a>
+{% else %}
+  <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+    <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.short_url }}</p>
+  </a>
+{% endif %}
+
+<button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
+
+            <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
           </div>
-          </ul>
-      </nav>
+        {% endif %}
+      {% endfor %}
 
-             <!-- link input and shorten button -->
-      <div class="top-layer1"><h1 class="description">Create short URL</h1>
-      <form action="{{ url_for('snipe.create') }}" method="POST">
-        <center><input type="text" class="text-field-content-row" name="url" placeholder="Enter your long URL here . . ." id="input-field" required/></center>
-          <div class="top-buttons"><center><button type="submit" id="shorten" class="content-row button">Shorten URL</button>
-            <button type="button" id="clear-btn" class="content-row button">Clear</button>
-          </center></div>
-      </form>
+      <div class="pagination-container">
+        {% if urls.has_prev %}
+          <div class="page-num1">
+            <a href="{{ url_for('snipe.index', page=urls.prev_num) }}" class="pagination-link">&lt; Previous</a>
+          </div>
+        {% endif %}
 
-               <!-- Output and copy -->
-        
-          <div id="output-div">
-             <div class="content-row" id="new-url-label">Your short URL - <p class="new-url-result">{{new_url}}</p></div>
-                 
-             <div class="copy-div">
-              <button type="button" id="copy-btn" class="copy-btn3" data-clipboard-target="#new-url">Copy</button>
-            </div>
-            </div>
-            <div id="error-div">
-              <p class="content-row" id="error-text"></p>
-            </div>
-            </div>
-            
-        
-
-
-            <div class="top-layer2">
-              <h1 class="description">Create custom URL</h1>
-              <form action="{{ url_for('snipe.custom') }}" method="POST" class="form2">
-                <input type="text" class="text-field-content-row2" name="long_url" placeholder="Enter your long URL here . . ." id="input-field" required/>
-                <input type="text" class="text-field-content-row2" name="custom_url_entry" placeholder="Enter your custom URL here . . ." id="custom-input-field" required style="margin-bottom: 0px;"/>
-                <center>
-                  <button type="submit" id="shorten" class="content-row button">Custom URL</button>
-                  
-                  <button type="button" id="clear-btn2" class="content-row button">Clear</button>
-                </center>
-              </form>
-            
-              <!-- Output and copy -->
-              <div id="output-div">
-                <div class="content-row" id="custom-url-label">Your custom URL - <p class="custom-url-result" id="custom-url-created">{{custom_url_created}}</p></div>
-                <div class="copy-div">
-                  <button type="button" id="copy-btn1" class="copy-btn4" data-clipboard-target="#custom-url-created" class="content-row button">Copy</button>
+        <div class="pagination-numbers">
+          {% for num in urls.iter_pages() %}
+            {% if num %}
+              {% if num == urls.page %}
+                <div class="page-num1 current-page">
+                  <span class="pagination-link">{{ num }}</span>
                 </div>
-              </div>
-              <div class="" id="error-div">
-                <p class="content-row" id="error-text"></p>
-              </div>
-              </div>              
-            
-            
-
-
-          <section class="hero" style="padding: 30px 20px;">
-            <center>
-                <h1 class="description2">Your URL history</h1>
-            </center>
-              {% if current_user.is_authenticated %}
-
-                {% if urls %}
-
-                  {% for url in urls.items %}
-
-                    {% if url.user_id==current_user.email %}
-
-                      <div class="card">
-                        <a href="/view/{{ url.id }}" style="color: black; text-decoration: none;">
-                          <h1 class="card-text" style="color: black; text-decoration: none; font-size: 70%; word-wrap:break-word;">{{ url.url_title }}</h1>
-                        </a>
-                        <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
-                        <h5 class="card-title" style="font-weight: lighter;">
-                          <div class="engagements">
-                            <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
-                          </div>
-                          Total engagements
-                        </h5>
-                        
-                        {% if url.custom_url %}
-                        <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                          <p class="short-url-history" style="font-weight: lighter;">{{ url.custom_url }}</a></p>
-                      {% else %}
-                        <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                          <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
-                      {% endif %}
-                      <button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
-                              <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
-                      </div>
-
-                      {% endif %}
-                    {% endfor %}
-                    <div class="pagination-container">
-                      {% if urls.has_prev %}
-                      <div class="page-num1">
-                        <a href="{{ url_for('snipe.index', page=urls.prev_num) }}" class="pagination-link"> &lt; Previous</a>
-                      </div>
-                      {% endif %}
-                    
-                      <div class="pagination-numbers">
-                        {% for num in urls.iter_pages() %}
-                          {% if num %}
-                            {% if num == urls.page %}
-                            <div class="page-num1 current-page">
-                              <span class="pagination-link">{{ num }}</span>
-                            </div>
-                            {% else %}
-                            <div class="page-num1">
-                              <a href="{{ url_for('snipe.index', page=num) }}" class="pagination-link">{{ num }}</a>
-                            </div>
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
-                      </div>
-                    
-                      {% if urls.has_next %}
-                      <div class="page-num1">
-                        <a href="{{ url_for('snipe.index', page=urls.next_num) }}" class="pagination-link">Next &gt;</a>
-                      </div>
-                      {% endif %}
-                    </div>                    
-                  {% endif %}
-                    
-                {% else %}
-                              <center>
-                                <h1>Please login to see your urls</h1>
-                              </center>
+              {% else %}
+                <div class="page-num1">
+                  <a href="{{ url_for('snipe.index', page=num) }}" class="pagination-link">{{ num }}</a>
+                </div>
               {% endif %}
-                          </section>
-                          
-                          
-             <!--App script-->
-             <script src="{{url_for('static', filename='app.js')}}"></script>
-             <script src="{{url_for('static', filename='engage.js')}}"></script>
-             <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if urls.has_next %}
+          <div class="page-num1">
+            <a href="{{ url_for('snipe.index', page=urls.next_num) }}" class="pagination-link">Next &gt;</a>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% else %}
+    <center>
+      <h1>Please log in to see your URLs</h1>
+    </center>
+  {% endif %}
+</section>
+
+<!-- ...remaining code... -->
+
+
+<!-- App script -->
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script src="{{ url_for('static', filename='engage.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 
 {% endblock %}

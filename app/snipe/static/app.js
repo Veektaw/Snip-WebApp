@@ -1,4 +1,4 @@
-// Selecting elements
+// Select elements
 const input = document.querySelector("#input-field");
 const shortUrl = document.querySelector("#new-url-label .new-url-result");
 const shortUrlhistory = document.querySelector(".short-url-history");
@@ -6,13 +6,13 @@ const clearButton1 = document.querySelector("#clear-btn");
 const clearButton2 = document.querySelector("#clear-btn2");
 const copyButton1 = document.querySelector("#copy-btn");
 const copyButton2 = document.querySelector("#copy-btn1");
-const copyButton5 = document.querySelector("#copy-btn5");
+const copyButtons = document.querySelectorAll('.copy-btn5');
 const inputLongUrl = document.querySelector(".text-field-content-row2[name='long_url']");
 const inputCustomUrl = document.querySelector(".text-field-content-row2[name='custom_url_entry']");
 const customUrlResult = document.querySelector("#custom-url-created");
 const errorDiv = document.querySelector("#error-div");
 
-// Clear fields function
+// Clear fields functions
 const clearFields = () => {
   input.value = '';
   hideResult();
@@ -26,6 +26,7 @@ const clearFields2 = () => {
   hideError();
 };
 
+// Event listeners for clear buttons
 clearButton1.addEventListener("click", (event) => {
   event.preventDefault();
   clearFields();
@@ -36,7 +37,7 @@ clearButton2.addEventListener("click", (event) => {
   clearFields2();
 });
 
-// Display/hide results and errors functions
+// Show/hide result functions
 const showResult = () => {
   shortUrl.style.display = "block";
 };
@@ -53,6 +54,7 @@ const hideCustomUrlResult = () => {
   customUrlResult.style.display = "none";
 };
 
+// Show/hide error functions
 const showError = () => {
   errorDiv.style.display = "block";
 };
@@ -61,7 +63,7 @@ const hideError = () => {
   errorDiv.style.display = "none";
 };
 
-// Copy button function
+// Copy to clipboard function
 const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text)
     .then(() => {
@@ -72,33 +74,30 @@ const copyToClipboard = (text) => {
     });
 };
 
+// Event listener for copy button 1 (short URL)
 copyButton1.addEventListener("click", (event) => {
   event.preventDefault();
   const textToCopy = shortUrl.textContent;
   copyToClipboard(textToCopy);
 });
 
+// Event listener for copy button 2 (custom URL)
 copyButton2.addEventListener("click", (event) => {
   event.preventDefault();
   const textToCopy = customUrlResult.textContent;
   copyToClipboard(textToCopy);
 });
 
-const handleCopyButtonClick = (event) => {
-  event.preventDefault();
-  const button = event.target;
-  const targetId = button.getAttribute('data-clipboard-target');
-  const targetElements = document.querySelectorAll(targetId);
-
-  let textToCopy = "";
-  targetElements.forEach((element) => {
-    textToCopy += element.textContent + "\n";
-  });
-
-  copyToClipboard(textToCopy.trim());
-};
-
-const copyButtons = document.querySelectorAll('.copy-btn5');
+// Event listener for copy buttons in each column
 copyButtons.forEach((button) => {
-  button.addEventListener('click', handleCopyButtonClick);
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
+    const targetId = button.getAttribute('data-clipboard-target');
+    const targetElement = document.querySelector(targetId);
+
+    if (targetElement) {
+      const textToCopy = targetElement.textContent.trim();
+      copyToClipboard(textToCopy);
+    }
+  });
 });
