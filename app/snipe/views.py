@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
-from .models import Url, Country
+from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file, jsonify
+from .models import Url, Country, User
 from .utils import db, bcrypt, limiter, cache, login_manager
 from sqlalchemy import desc
 from app.helpers.view import URLCreator, generate_qr_code
@@ -21,8 +21,10 @@ def index():
 
 
 @snipe.route('/home')
+# @cache.cached(timeout=30)
 @login_required
 def home():
+    
     page = request.args.get('page', 1, type=int)
     per_page = 5 
 
@@ -75,6 +77,7 @@ def create():
 @limiter.limit("5 per minute")
 @login_required
 def custom():
+    
     if request.method == 'POST':
         long_url = request.form.get('long_url')
         custom_url_entry = request.form.get('custom_url_entry')
@@ -107,19 +110,22 @@ def custom():
 
 
 
-@snipe.route('/view/<int:id>/', methods=["GET", "POST"])
-@login_required
+
+
+@snipe.route('/<int:id>/view/', methods=["GET", "POST"])
 @limiter.limit("5 per minute")
-@cache.cached(timeout=50)
-def get_url_by_id(id):
+@cache.cached(timeout=30)
+@login_required
+def view(id):
 
     url = Url.get_by_id(id)
-    return render_template('view_url.html', url=url)
+    return render_template('view.html', url=url)
 
 
 
-@snipe.route('/delete/<int:id>/', methods=['POST', 'GET', 'DELETE'])
+@snipe.route('/<int:id>/delete', methods=['POST', 'GET', 'DELETE'])
 @limiter.limit("5 per minute")
+@cache.cached(timeout=30)
 @login_required
 def delete_url(id):
     
@@ -127,13 +133,13 @@ def delete_url(id):
     if url:
         db.session.delete(url)
         db.session.commit()
-        flash("URL deleted successfully")
+        flash("URL successfully deleted")
         
     return redirect(url_for('snipe.home'))
 
 
 
-@snipe.route('/qrcode/<int:id>/', methods=['POST', 'GET'])
+@snipe.route('/<int:id>/qrcode/', methods=['POST', 'GET'])
 @login_required
 @limiter.limit("5 per minute")
 def generate_qr_code_url(id):
@@ -159,31 +165,38 @@ def generate_qr_code_url(id):
 
 @snipe.route('/click/<int:id>/', methods=['POST', 'GET'])
 @login_required
-@limiter.limit("5 per minute")
-@cache.cached(timeout=50)
 def redirect_url(id):
+    
     url = Url.query.get(id)
     if url:
         url.clicks += 1
         db.session.commit()
         return redirect(url.url)
+    
     return 'URL not found.'
 
 
-@snipe.route('/country', methods=['POST', 'GET'])
+@snipe.route('/save_country', methods=['POST'])
 @login_required
 def save_country():
-    country_code = request.form.get('country_code')
-    click = Country(country_code=country_code)
-    click.save()
+    url_id = request.form.get('url_id')
+    country_name = request.form.get('country_name')
+    clicks = request.form.get('clicks')
 
-    return 'Country saved successfully'
+    url = Url.get_by_id(url_id)
+    if url:
+        country = Country(country=country_name, clicks=clicks, url_id=url_id)
+        country.save()
+        return jsonify({'message': 'Country saved successfully.'})
+    else:
+        return jsonify({'error': 'URL not found.'}), 404
 
 
-@snipe.route('/about', methods=['POST', 'GET'])
+
+@snipe.route('/about', methods=['GET'])
 @login_required
 @limiter.limit("5 per minute")
-@cache.cached(timeout=50)
+@cache.cached(timeout=59)
 def about():
     
     return render_template('about.html')

@@ -8,9 +8,9 @@ from flask_limiter.util import get_remote_address
 from flask_login import LoginManager
 from dotenv import load_dotenv
 from flask_cors import CORS
-
-from .views import snipe
 from .auth import auth
+from .views import snipe
+
 
 
 
@@ -37,9 +37,7 @@ def create_app(config_file='settings.py'):
         storage_options={}
         )
     
-    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
-    #cache.init_app(app)
-    
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'}) 
     
     @app.shell_context_processor
     def make_shell_context():

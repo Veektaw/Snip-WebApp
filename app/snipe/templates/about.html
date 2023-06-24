@@ -3,28 +3,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
 
 {% block head %}
-  <title>Home</title>
+  <title>About</title>
 {% endblock %}
 
 {% block body %}
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% set error_displayed = false %}
-    {% for message in messages %}
-      {% if 'error' in message.lower() and not error_displayed %}
-        {% set error_displayed = true %}
-        <div role="alert" class="alert error">
-          <p class="alert-msg">{{ message }}</p>
-        </div>
-      {% elif 'error' not in message.lower() %}
-        <div role="alert" class="alert normal">
-          <p class="alert-msg">{{ message }}</p>
-        </div>
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-{% endwith %}
 
 <nav class="navbar">
     <img src="../static/images/pngwing.com.png">

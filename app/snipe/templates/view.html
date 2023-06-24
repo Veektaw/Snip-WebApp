@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block head %}
-  <title>View Url</title>
+  <title>View</title>
 {% endblock %}
 
 {% block body %}
 
 <nav class="navbar">
-        <img src="../static/images/pngwing.com.png">
+        <img src="{{url_for('static', filename='images/pngwing.com.png')}}" alt="Snipe logo">
         <div class="logo">Snipe</div>
           <ul class="nav-links">
             <div class="menu">
@@ -25,12 +25,13 @@
         
     <section class="hero" style="padding: 0px 20px;">
         <center>
+          
           <h1 class="description2">Your URL</h1>
         </center>
         {% if current_user.is_authenticated %}
         {% if url %}
           {% if url.user_id == current_user.email %}
-          <div class="card" style="border-bottom: 0px;">
+          <div class="card" style="border-bottom: 0px; box-shadow: 1px 1px 8px 0 grey; border-radius: 18px;">
             
             <a href="{{ url.url }}" style="color: black; text-decoration: none;" >
                 <h1 class="card-text" style="color: black; text-decoration: none; font-size: 26px;">{{ url.url_title }}</h1>
@@ -45,9 +46,14 @@
             </h5>
 
             <h5 class="card-title" style="font-weight: lighter; margin-top: 3px;">
-              List of countries:
-              <ul id="country-list"></ul>
+                List of countries:
+                <ul id="country-list">
+                  {% for country in url.country %}
+                    <li>{{ country.country }} - Clicks: {{ country.clicks }}</li>
+                  {% endfor %}
+                </ul>
             </h5>
+              
 
             
             {% if url.custom_url %}
@@ -59,7 +65,7 @@
                 <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
             {% endif %}
             <button id="copy-btn" class="copy-btn2" data-clipboard-target="#new_url">Copy</button>
-                <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
+                <a href="/{{ url.id }}/delete"><button id="delete-btn" class="delete-btn2">Delete</button></a>
                 <a href="{{ url_for('snipe.generate_qr_code_url', id=url.id) }}" class="qrcode_create"><p class="qrcode_click">Create QR code</p></a>
                 
 

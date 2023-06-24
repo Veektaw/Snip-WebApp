@@ -35,7 +35,7 @@ clearButton2.addEventListener("click", (event) => {
   clearFields2();
 });
 
-// Display/hide results and errors functions
+
 const showResult = () => {
   shortUrl.style.display = "block";
 };
@@ -60,7 +60,7 @@ const hideError = () => {
   errorDiv.style.display = "none";
 };
 
-// Copy button function
+
 const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text)
     .then(() => {
@@ -77,10 +77,10 @@ const showCopyPopup = (text) => {
   popup.classList.add("copy-popup");
   popup.textContent = "Text copied - " + text;
 
-  // Append the popup to the document body
+
   document.body.appendChild(popup);
 
-  // Automatically remove the popup after a certain duration (e.g., 3 seconds)
+
   setTimeout(() => {
     document.body.removeChild(popup);
   }, 3000);

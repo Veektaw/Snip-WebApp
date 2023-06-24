@@ -1,25 +1,40 @@
 from datetime import datetime
 from .utils import db, login_manager, bcrypt
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 
 class User(db.Model, UserMixin):
-    
-    __tablename__  = 'users'
-    
-    id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(50), unique=True)
+    phone_number = db.Column(db.Text(), unique=True)
     password = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now)
     url = db.relationship('Url', backref='user', lazy=True)
 
     def __repr__(self):
-        return f"<user {self.email}>"
+        return f"<User {self.email}>"
     
+    @classmethod
+    def get_by_id(cls, id):
+        url = db.session.get(Url, id)
+        return url
+
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+        
+    
 
 
 
@@ -35,6 +50,7 @@ class Url(db.Model):
     url_title = db.Column(db.String(900), nullable=True, unique=False)
     clicks = db.Column(db.Integer(), default=0)
     date_created = db.Column(db.DateTime(), default=datetime.now)
+    country_origin = db.relationship('Country', backref='countries', lazy=True)
     user_id = db.Column(db.String(), db.ForeignKey('users.id'))
 
     def __repr__(self):
@@ -72,8 +88,10 @@ class Country(db.Model):
     
     __tablename__  = 'countries'
     
-    id = db.Column(db.Integer, primary_key=True)
-    country_code = db.Column(db.String(100), nullable=False)
+    id = db.Column(db.Integer(), primary_key=True)
+    country = db.Column(db.String(100), nullable=False)
+    clicks = db.Column(db.Integer(), default=0)
+    url_id = db.Column(db.String(), db.ForeignKey('urls.id'))
     
     def __repr__(self):
         return f"<url {self.id}>"

@@ -70,10 +70,6 @@
   }
   
   
-  
-
-
-
    a {
     text-decoration: none;
     color: #1b1b1b;
@@ -177,18 +173,20 @@ ul {
 
 .top-layer1 {
   background-color: white;
-  border-radius: 17px;
+  border-radius: 18px;
   margin: auto;
   width: 85%;
+  box-shadow: 1px 1px 8px 0 grey;
   height: 350px;
   margin-bottom: 20px;
 }
 
 .top-layer2 {
   background-color: white;
-  border-radius: 17px;
+  border-radius: 18px;
   margin: auto;
   width: 85%;
+  box-shadow: 1px 1px 8px 0 grey;
   height: 400px;
   margin-bottom: 20px;
 }

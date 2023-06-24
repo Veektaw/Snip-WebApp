@@ -30,9 +30,8 @@
   <ul class="nav-links">
     <div class="menu">
       {% if current_user.is_authenticated %}
+      <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
       <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-      <li><a href="{{ url_for('snipe.create') }}">About</a></li>
-      <li><a href="{{ url_for('snipe.about') }}">About</a></li>
       {% else %}
       <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
       <li><a href="{{ url_for('auth.login') }}">Login</a></li>

@@ -30,19 +30,21 @@
   <img src="../static/images/pngwing.com.png">
   <div class="logo">Snipe</div>
   <ul class="nav-links">
-    <div class="menu">
-      {% if current_user.is_authenticated %}
-      <li><a href="{{ url_for('snipe.about') }}">About</a></li>
-      <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-      
-      {% else %}
-      <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
-      <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-      <li><a href="{{ url_for('snipe.about') }}">About</a></li>
-      {% endif %}
-    </div>
-  </ul>
+      <div class="menu">
+
+          {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('snipe.about') }}">About</a></li>
+              <li><a href="/{{ current_user.id }}/profile/">Profile</a></li>
+              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+          {% else %}
+              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+          {% endif %}
+      </div>
+</ul>
 </nav>
+
+
 
 <div class="top-layer1">
   <h1 class="description">Create short URL</h1>
@@ -93,84 +95,8 @@
   </div>
 </div>
 
-<!-- ...previous code... -->
 
-<section class="hero" style="padding: 30px 20px;">
-  <center>
-    <h1 class="description2">Your URL history</h1>
-  </center>
 
-  {% if current_user.is_authenticated %}
-    {% if urls %}
-      {% for url in urls.items %}
-        {% if url.user_id == current_user.email %}
-          <div class="card">
-            <a href="/view/{{ url.id }}" style="color: black; text-decoration: none;">
-              <h1 class="card-text" style="color: black; text-decoration: none; font-size: 70%; word-wrap:break-word;">{{ url.url_title }}</h1>
-            </a>
-            <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
-            <h5 class="card-title" style="font-weight: lighter;">
-              <div class="engagements">
-                <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
-              </div>
-              Total engagements
-            </h5>
-
-            {% if url.custom_url %}
-                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                  <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.custom_url }}</p>
-                </a>
-            {% else %}
-                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
-                  <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.short_url }}</p>
-                </a>
-            {% endif %}
-
-        <button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
-
-            <a href="/delete/{{ url.id }}"><button id="delete-btn" class="delete-btn2">Delete</button></a>
-          </div>
-        {% endif %}
-      {% endfor %}
-
-      <div class="pagination-container">
-        {% if urls.has_prev %}
-          <div class="page-num1">
-            <a href="{{ url_for('snipe.index', page=urls.prev_num) }}" class="pagination-link">&lt; Previous</a>
-          </div>
-        {% endif %}
-
-        <div class="pagination-numbers">
-          {% for num in urls.iter_pages() %}
-            {% if num %}
-              {% if num == urls.page %}
-                <div class="page-num1 current-page">
-                  <span class="pagination-link">{{ num }}</span>
-                </div>
-              {% else %}
-                <div class="page-num1">
-                  <a href="{{ url_for('snipe.index', page=num) }}" class="pagination-link">{{ num }}</a>
-                </div>
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-        </div>
-
-        {% if urls.has_next %}
-          <div class="page-num1">
-            <a href="{{ url_for('snipe.index', page=urls.next_num) }}" class="pagination-link">Next &gt;</a>
-          </div>
-        {% endif %}
-      </div>
-    {% endif %}
-  {% else %}
-    <center>
-      <h1>Please log in to see your URLs</h1>
-    </center>
-  {% endif %}
-</section>
-
-<!-- ...remaining code... -->
 
 
 <!-- App script -->

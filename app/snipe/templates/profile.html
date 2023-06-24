@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+
+
+{% block head %}
+  <title>Home</title>
+{% endblock %}
+
+
+<title>Profile Page</title>
+
+
+
+{% block body %}
+
+
+<nav class="navbar">
+    <img src="{{url_for('static', filename='images/pngwing.com.png')}}" alt="Snipe logo">
+    <div class="logo">Snipe</div>
+    <ul class="nav-links">
+        <div class="menu">
+
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
+                <li><a href="{{ url_for('snipe.about') }}">About</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+            {% endif %}
+        </div>
+  </ul>
+</nav>
+
+
+<div class="main">
+    <h2>Hello {{current_user.name}}</h2>
+    <div class="card">
+        <div class="card-body">
+            <i class="fa fa-pen fa-xs edit"></i>
+            <div class="column">
+                <p><strong>Name:</strong> <span id="user-name"></span>{{current_user.name}}</p>
+                <p><strong>Email:</strong> <span id="user-email"></span>{{current_user.email}}</p>
+                <p><strong>Phone Number:</strong> <span id="user-phone"></span>{{current_user.phone_number}}</p>
+                <p><strong>Date joined:</strong> <span id="user-phone"></span>{{current_user.created_at.strftime('%B %d, %Y')}}</p>
+              </div>
+        </div>
+    </div>
+
+    <h2>Your URL history</h2>
+    <section class="hero" style="padding: 30px 20px;">
+        
+      
+        {% if current_user.is_authenticated %}
+          {% if urls %}
+            {% for url in urls.items %}
+              {% if url.user_id == current_user.email %}
+                <div class="card">
+                  <a href="/{{ url.id }}/view/" style="color: black; text-decoration: none;">
+                    <h1 class="card-text" style="color: black; text-decoration: none; font-size: 70%; word-wrap:break-word;">{{ url.url_title }}</h1>
+                  </a>
+                  <h5 class="date_created">{{ url.date_created.strftime('%B %d, %Y') }}</h5>
+                  <h5 class="card-title" style="font-weight: lighter;">
+                    <div class="engagements">
+                      <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
+                    </div>
+                    Total engagements
+                  </h5>
+      
+                  {% if url.custom_url %}
+                      <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                        <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.custom_url }}</p>
+                      </a>
+                  {% else %}
+                      <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                        <p class="short-url-history" id="copy-target-{{ url.id }}" style="font-weight: lighter;">{{ url.short_url }}</p>
+                      </a>
+                  {% endif %}
+      
+              <button type="button" class="copy-btn5" data-clipboard-target="#copy-target-{{ url.id }}">Copy</button>
+      
+                  <a href="/{{ url.id }}/delete/"><button id="delete-btn" class="delete-btn2">Delete</button></a>
+                  <a href="{{ url_for('snipe.generate_qr_code_url', id=url.id) }}" class="qrcode_create"><p class="qrcode_click">Create QR code</p></a>
+                </div>
+              {% endif %}
+            {% endfor %}
+      
+            <div class="pagination-container">
+              {% if urls.has_prev %}
+                <div class="page-num1">
+                  <a href="{{ url_for('snipe.home', page=urls.prev_num) }}" class="pagination-link">&lt; Previous</a>
+                </div>
+              {% endif %}
+      
+              <div class="pagination-numbers">
+                {% for num in urls.iter_pages() %}
+                  {% if num %}
+                    {% if num == urls.page %}
+                      <div class="page-num1 current-page">
+                        <span class="pagination-link">{{ num }}</span>
+                      </div>
+                    {% else %}
+                      <div class="page-num1">
+                        <a href="{{ url_for('snipe.home', page=num) }}" class="pagination-link">{{ num }}</a>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+      
+              {% if urls.has_next %}
+                <div class="page-num1">
+                  <a href="{{ url_for('snipe.home', page=urls.next_num) }}" class="pagination-link">Next &gt;</a>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% else %}
+          
+        {% endif %}
+      </section>
+
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/engage.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+{% endblock %}
