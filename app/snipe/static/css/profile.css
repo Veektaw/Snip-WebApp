@@ -47,19 +47,7 @@ body {
 
 /* End */
 
-/* Sidenav */
-.sidenav {
-    background-color: #fff;
-    color: #333;
-    border-bottom-right-radius: 25px;
-    height: 86%;
-    left: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
-    position: absolute;
-    top: 70px;
-    width: 250px;
-}
+
 
 .profile {
     margin-bottom: 20px;
@@ -67,45 +55,7 @@ body {
     text-align: center;
 }
 
-.name {
-    font-size: 20px;
-    font-weight: bold;
-    padding-top: 20px;
-}
 
-.job {
-    font-size: 16px;
-    font-weight: bold;
-    padding-top: 10px;
-}
-
-.url, hr {
-    text-align: center;
-}
-
-.url hr {
-    margin-left: 20%;
-    width: 60%;
-}
-
-.url a {
-    color: #818181;
-    display: block;
-    font-size: 20px;
-    margin: 10px 0;
-    padding: 6px 8px;
-    text-decoration: none;
-}
-
-.url a:hover, .url .active {
-    background-color: #e8f5ff;
-    border-radius: 28px;
-    color: #000;
-    margin-left: 14%;
-    width: 65%;
-}
-
-/* End */
 
 /* Main */
 .main {
@@ -118,8 +68,7 @@ body {
 }
 
 .main h2 {
-    color: #333;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2b5cd8;
     font-size: 24px;
     margin-bottom: 10px;
 }
@@ -129,6 +78,9 @@ body {
     border-radius: 18px;
     box-shadow: 1px 1px 8px 0 grey;
     height: auto;
+    width:65%;
+    margin-right: auto;
+    margin-left: auto;
     margin-bottom: 20px;
     padding: 10px 0 10px 20px;
 }
@@ -155,32 +107,52 @@ body {
     margin: 0 10px;
 }
 
-.fa-facebook:hover {
-    color: #4267b3 !important;
-}
-
-.fa-twitter:hover {
-    color: #1da1f2 !important;
-}
-
-.fa-instagram:hover {
-    color: #ce2b94 !important;
-}
-
-.fa-invision:hover {
-    color: #f83263 !important;
-}
-
-.fa-github:hover {
-    color: #161414 !important;
-}
-
-.fa-whatsapp:hover {
-    color: #25d366 !important;
-}
-
-.fa-snapchat:hover {
-    color: #fffb01 !important;
-}
-
 /* End */
+
+@media only screen and (max-width: 600px) {
+
+.main .card {
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 grey;
+    height: auto;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 20px;
+    padding: 10px 0 10px 20px;
+}
+
+.main .card table {
+    border: none;
+    font-size: 16px;
+    height: 270px;
+    width: 80%;
+}}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .profile-info {
+    display: flex;
+    align-items: center;
+    color: #043c8c;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  
+  .profile-info i {
+    margin-right: 5px;
+    margin-top: 2px;
+  }
+  
+
+  .profile-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+ 

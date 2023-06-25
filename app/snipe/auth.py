@@ -20,7 +20,7 @@ def user_loader(id):
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @auth.route("/signup", methods=['GET', 'POST'])
-@limiter.limit("5 per minute")
+@limiter.limit("2 per minute")
 def signup():
     if request.method == 'POST':
         name = request.form.get('name')
@@ -102,6 +102,46 @@ def logout():
     logout_user()
 
     return redirect(url_for('snipe.index'))
+
+
+
+@auth.route("/change_password", methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if not check_password_hash(current_user.password, current_password):
+            flash("Incorrect current password", category="error")
+            return redirect(url_for('auth.change_password'))
+
+        if new_password != confirm_password:
+            flash("Password confirmation does not match", category="error")
+            return redirect(url_for('auth.change_password'))
+
+        if len(new_password) < 8 or not any(c in "!@#$%^&*(),.?\":{}|<>1234567890" for c in new_password):
+            flash("New password must be at least 8 characters long and contain a special character or number", category="error")
+            return redirect(url_for('auth.change_password'))
+
+        if check_password_hash(current_user.password, new_password):
+            flash("New password must be different from the current password", category="error")
+            return redirect(url_for('auth.change_password'))
+
+        current_user.password = generate_password_hash(new_password)
+        current_user.save()
+
+        flash("Password changed successfully")
+        return redirect(url_for('auth.profile'))
+
+    return render_template('password_change.html')
+
+
+
+
+
+
 
 @auth.route('/<int:user_id>/profile/', methods=["GET", "POST"])
 @login_required

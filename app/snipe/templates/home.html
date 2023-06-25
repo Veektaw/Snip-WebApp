@@ -26,23 +26,26 @@
   {% endif %}
 {% endwith %}
 
-<nav class="navbar">
-  <img src="../static/images/pngwing.com.png">
-  <div class="logo">Snipe</div>
-  <ul class="nav-links">
-      <div class="menu">
+<section class="top-nav">
+  <div>
+    Snipe
+  </div>
+  <input id="menu-toggle" type="checkbox" />
+  <label class='menu-button-container' for="menu-toggle">
+  <div class='menu-button'></div>
+</label>
+  <ul class="menu">
+    {% if current_user.is_authenticated %}
+                <li><a href="{{ current_user.id }}/profile/">Profile</a></li>
+                <li><a href="{{ url_for('snipe.about') }}">About</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+            {% endif %}
+  </ul>
+</section>
 
-          {% if current_user.is_authenticated %}
-              <li><a href="{{ url_for('snipe.about') }}">About</a></li>
-              <li><a href="/{{ current_user.id }}/profile/">Profile</a></li>
-              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-          {% else %}
-              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
-              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-          {% endif %}
-      </div>
-</ul>
-</nav>
 
 
 
@@ -94,6 +97,7 @@
     <p class="content-row" id="error-text"></p>
   </div>
 </div>
+
 
 
 

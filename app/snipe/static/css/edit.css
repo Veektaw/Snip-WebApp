@@ -1,22 +1,15 @@
-.by {
-    color: #1974d2;
-  }
-  
-  .by-class {
-    color: #1974d2;
-    padding-top: 10px;
-  }
-    .left, .right, .center {
-      width: 33%;
-      color: white;
-      padding: 10px;
-      height: 50%;
-      margin-top: 40px;
-      text-align: center;
-   }
-  
-  
-   .center {
-      background-color: transparent;
-      color: #1b1b1b;
-   }
+.input-type[type=text]{
+  width:70%;
+  border:2px solid #aaa;
+  border-radius:4px;
+  margin:8px 0;
+  outline:none;
+  padding:8px;
+  box-sizing:border-box;
+  transition:.3s;
+}
+
+.input-type[type=text]:focus{
+  border-color:dodgerBlue;
+  box-shadow:0 0 8px 0 dodgerBlue;
+}

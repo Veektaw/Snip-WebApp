@@ -1,3 +1,9 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+
+* {
+  font-family: "Raleway";
+}
+
 body{
   min-height: 100vh;
   width: 100%;
@@ -72,7 +78,7 @@ a {
 .form {
   background-color: white;
   width: 400px;
-  border-radius: 8px;
+  border-radius: 18px;
   padding: 20px 40px;
   box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
 }
@@ -159,3 +165,171 @@ a {
   font-weight: 600;
 }
 
+
+@media only screen and (max-width: 600px) {
+
+  body{
+    min-height: 100vh;
+    width: 100%;
+    background: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  
+  .alert-msg {
+    padding-bottom: 4px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  
+     .alert {
+      position: absolute;
+      top: 50px;
+      border-radius: 10px;
+      width: 55%;
+      margin-left: auto;
+      margin-right: auto;
+      height: 50px;
+      margin-bottom: 2px;
+      background-color: #ecc5c9;
+      font-weight: bolder;
+      font-family: Trebuchet MS;
+      color: #8f3648;
+      text-align: center;
+     }
+  
+  
+     .alert {
+      -moz-animation: cssAnimation 0s ease-in 5s forwards;
+      
+      -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+  
+      -o-animation: cssAnimation 0s ease-in 5s forwards;
+     
+      animation: cssAnimation 0s ease-in 5s forwards;
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+  }
+  @keyframes cssAnimation {
+      to {
+          width:0;
+          height:0;
+          overflow:hidden;
+      }
+  }
+  @-webkit-keyframes cssAnimation {
+      to {
+          width:0;
+          height:0;
+          visibility:hidden;
+      }
+  }
+  
+  
+  
+  
+  .signupFrm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form {
+    background-color: white;
+    width: 250px;
+    border-radius: 18px;
+    padding: 20px 40px;
+    box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
+  }
+  
+  .title {
+    font-size: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .inputContainer {
+    position: relative;
+    height: 45px;
+    width: 90%;
+    margin-right: 70px;
+    margin-bottom: 17px;
+  }
+  
+  .input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 90%;
+    border: 1px solid #DADCE0;
+    border-radius: 7px;
+    font-size: 12px;
+    outline: none;
+    background: none;
+    z-index: 1;
+  }
+  
+  ::placeholder {
+    color: transparent;
+  }
+  
+  .label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 0 4px;
+    background-color: white;
+    color: #DADCE0;
+    font-size: 16px;
+    transition: 0.5s;
+    z-index: 0;
+  }
+  
+  .submitBtn {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px 30px;
+    border: none;
+    background-color: #1974d2;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 30px;
+  }
+  
+  .submitBtn:hover {
+    background-color: #9867C5;
+    transform: translateY(-2px);
+  }
+  
+  .input:focus + .label {
+    top: -7px;
+    left: 3px;
+    z-index: 10;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1974d2;
+  }
+  
+  .input:focus {
+    border: 2px solid purple;
+  }
+  
+  .input:not(:placeholder-shown)+ .label {
+    top: -7px;
+    left: 3px;
+    z-index: 10;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+}

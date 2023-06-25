@@ -8,21 +8,27 @@
 
 {% block body %}
 
-<nav class="navbar">
-    <img src="../static/images/pngwing.com.png">
-    <div class="logo">Snipe</div>
-    <ul class="nav-links">
-        <div class="menu">
-            {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
-                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+<section class="top-nav">
+  <div>
+    Snipe
+  </div>
+  <input id="menu-toggle" type="checkbox" />
+  <label class='menu-button-container' for="menu-toggle">
+  <div class='menu-button'></div>
+</label>
+  <ul class="menu">
+    {% if current_user.is_authenticated %}
+              <li><a href="{{url_for('auth.profile', user_id=current_user.id)}}">Profile</a></li>
+              <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
+              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
             {% else %}
-                <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
-                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
             {% endif %}
-        </div>
   </ul>
-</nav>
+</section>
+
+
 <center>
     <div class="profile-image">
       <img src="../static/images/00100sPORTRAIT_00100_BURST20181005110856440_COVER~2.jpg" alt="Profile Image">

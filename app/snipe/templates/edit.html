@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
+
+{% block head %}
+  <title>Home</title>
+{% endblock %}
+
+{% block body %}
+
+
+
+<section class="top-nav">
+    <div>
+      Snipe
+    </div>
+    <input id="menu-toggle" type="checkbox" />
+    <label class='menu-button-container' for="menu-toggle">
+      <div class='menu-button'></div>
+    </label>
+    <ul class="menu">
+      {% if current_user.is_authenticated %}
+            <li><a href="{{url_for('auth.profile', user_id=current_user.id)}}">Profile</a></li>
+            <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+      {% endif %}
+    </ul>
+</section>
+<center>
+    <div style="margin-top: 200px;">
+        <h1 style="margin-right: auto; margin-left: auto; margin-bottom: 10px; margin-top: 70px; color: #2b5cd8; font-size: 30px;">Edit your profile</h1>
+        <form action="{{ url_for('snipe.edit', user_id=current_user.id) }}" method="POST" class="form">
+            <input style="width: 70%; margin-bottom: 30px;"  type="text" placeholder="Your name" name="name" required>
+            <input style="width: 70%; margin-bottom: 30px;"  type="text" placeholder="Your email" name="email" required>
+            <input style="width: 70%; margin-bottom: 30px;"  type="text" placeholder="Your phone number" name="phone_number" required>
+            <button type="submit" value="Update" style="width: 100px; height: 40px; background-color: #2b5cd8; border-radius: 4px; color: aliceblue; display: block;">Update</button>
+        </form>
+    </div>
+</center>
+
+
+{% endblock %}

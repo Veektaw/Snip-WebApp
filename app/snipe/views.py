@@ -21,7 +21,6 @@ def index():
 
 
 @snipe.route('/home')
-# @cache.cached(timeout=30)
 @login_required
 def home():
     
@@ -105,7 +104,7 @@ def custom():
                 db.session.rollback()
                 return render_template('error.html')
 
-    return redirect(url_for('snipe.homepage', custom_url_created=custom_url))
+    return redirect(url_for('snipe.home', custom_url_created=custom_url))
 
 
 
@@ -135,7 +134,8 @@ def delete_url(id):
         db.session.commit()
         flash("URL successfully deleted")
         
-    return redirect(url_for('snipe.home'))
+    return redirect(url_for('auth.profile'))
+    
 
 
 
@@ -170,7 +170,8 @@ def redirect_url(id):
     url = Url.query.get(id)
     if url:
         url.clicks += 1
-        db.session.commit()
+        url.save()
+        
         return redirect(url.url)
     
     return 'URL not found.'
@@ -200,3 +201,22 @@ def save_country():
 def about():
     
     return render_template('about.html')
+
+
+@snipe.route('/<int:user_id>/edit/', methods=['PATCH', 'PUT', 'GET', 'POST'])
+@login_required
+@limiter.limit("1 per week")
+def edit(user_id):
+    
+    profile = User.query.filter_by(email=current_user.email).first()
+
+    if request.method == 'POST':
+        profile.name = request.form['name']
+        profile.email = request.form['email']
+        profile.phone_number = request.form['phone_number']
+    
+        db.session.commit()
+        flash("Success! Profile updated")
+        return redirect(url_for('auth.profile', user_id=current_user.id))
+    
+    return render_template('edit.html')

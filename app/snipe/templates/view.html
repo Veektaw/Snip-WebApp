@@ -6,27 +6,31 @@
 
 {% block body %}
 
-<nav class="navbar">
-        <img src="{{url_for('static', filename='images/pngwing.com.png')}}" alt="Snipe logo">
-        <div class="logo">Snipe</div>
-          <ul class="nav-links">
-            <div class="menu">
-              {% if current_user.is_authenticated %}
-              <li><a href="{{ url_for('snipe.home') }}">Home</a></li>
-              <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-              {%  else %}
-              <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
-              <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+<section class="top-nav">
+    <div>
+      Snipe
+    </div>
+    <input id="menu-toggle" type="checkbox" />
+    <label class='menu-button-container' for="menu-toggle">
+    <div class='menu-button'></div>
+  </label>
+    <ul class="menu">
+      {% if current_user.is_authenticated %}
+                <li><a href="{{url_for('auth.profile', user_id=current_user.id)}}">Profile</a></li>
+                <li><a href="{{ url_for('snipe.about') }}">About</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+              {% else %}
+                <li><a href="{{ url_for('auth.signup') }}">Sign up</a></li>
+                <li><a href="{{ url_for('auth.login') }}">Login</a></li>
               {% endif %}
-          </div>
-          </ul>
-      </nav>
+    </ul>
+  </section>
 
         
     <section class="hero" style="padding: 0px 20px;">
         <center>
           
-          <h1 class="description2">Your URL</h1>
+          <h1 class="description2" style="margin-top: 170px;">Your URL</h1>
         </center>
         {% if current_user.is_authenticated %}
         {% if url %}

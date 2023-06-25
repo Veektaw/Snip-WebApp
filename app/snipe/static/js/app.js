@@ -11,7 +11,7 @@ const inputCustomUrl = document.querySelector(".text-field-content-row2[name='cu
 const customUrlResult = document.querySelector("#custom-url-created");
 const errorDiv = document.querySelector("#error-div");
 
-// Clear fields function
+
 const clearFields = () => {
   input.value = '';
   hideResult();
