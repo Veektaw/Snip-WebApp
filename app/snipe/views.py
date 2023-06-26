@@ -134,7 +134,7 @@ def delete_url(id):
         db.session.commit()
         flash("URL successfully deleted")
         
-    return redirect(url_for('auth.profile'))
+    return redirect(url_for('auth.profile', user_id=current_user.id))
     
 
 

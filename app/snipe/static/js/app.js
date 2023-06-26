@@ -11,7 +11,6 @@ const inputCustomUrl = document.querySelector(".text-field-content-row2[name='cu
 const customUrlResult = document.querySelector("#custom-url-created");
 const errorDiv = document.querySelector("#error-div");
 
-
 const clearFields = () => {
   input.value = '';
   hideResult();
@@ -34,7 +33,6 @@ clearButton2.addEventListener("click", (event) => {
   event.preventDefault();
   clearFields2();
 });
-
 
 const showResult = () => {
   shortUrl.style.display = "block";
@@ -60,7 +58,6 @@ const hideError = () => {
   errorDiv.style.display = "none";
 };
 
-
 const copyToClipboard = (text) => {
   navigator.clipboard.writeText(text)
     .then(() => {
@@ -77,9 +74,7 @@ const showCopyPopup = (text) => {
   popup.classList.add("copy-popup");
   popup.textContent = "Text copied - " + text;
 
-
   document.body.appendChild(popup);
-
 
   setTimeout(() => {
     document.body.removeChild(popup);
@@ -112,7 +107,3 @@ const handleCopyButtonClick = (event) => {
   copyToClipboard(textToCopy.trim());
 };
 
-const copyButtons = document.querySelectorAll('.copy-btn5');
-copyButtons.forEach((button) => {
-  button.addEventListener('click', handleCopyButtonClick);
-});

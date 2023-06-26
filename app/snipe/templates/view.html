@@ -8,7 +8,7 @@
 
 <section class="top-nav">
     <div>
-      Snipe
+      Snip
     </div>
     <input id="menu-toggle" type="checkbox" />
     <label class='menu-button-container' for="menu-toggle">
@@ -46,7 +46,8 @@
             <h5 class="card-title"  style="font-weight: lighter;">
               <div class="engagements">
                 <p class="engagement-clicks" id="engagement-{{ url.id }}" style="font-weight: lighter;">{{ url.clicks }}</p>
-              </div> Total engagements
+              </div>
+              Total engagements
             </h5>
 
             <h5 class="card-title" style="font-weight: lighter; margin-top: 3px;">
@@ -61,11 +62,11 @@
 
             
             {% if url.custom_url %}
-                <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
                 <p class="short-url-history" style="font-weight: lighter;">{{ url.custom_url }}</a></p>
             {% else %}
 
-                <a href="{{ url.url }}" id="url_click" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
+                <a href="{{ url.url }}" class="url-link" id="url_click{{ url.id }}" style="color: #ff7518; font-size: 55%; margin-top: 5px; font-weight: lighter;">
                 <p class="short-url-history" style="font-weight: lighter;">{{ url.short_url }}</a></p>
             {% endif %}
             <button id="copy-btn" class="copy-btn2" data-clipboard-target="#new_url">Copy</button>

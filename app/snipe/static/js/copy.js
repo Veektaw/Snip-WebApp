@@ -17,10 +17,10 @@ const showCopyPopup = (text) => {
   popup.classList.add("copy-popup");
   popup.textContent = "Text copied - " + text;
 
-  // Append the popup to the document body
+
   document.body.appendChild(popup);
 
-  // Automatically remove the popup after a certain duration (e.g., 3 seconds)
+
   setTimeout(() => {
     document.body.removeChild(popup);
   }, 3000);
@@ -34,34 +34,34 @@ copyButton.addEventListener("click", (event) => {
 
 
 
-const saveCountry = (formData) => {
+// const saveCountry = (formData) => {
 
-  axios.post('/save_country', formData)
-    .then(response => {
-      const { country, clicks } = response.data;
-      // Update UI with the received country and clicks data
-      const countryElement = document.createElement('li');
-      countryElement.textContent = `${country} - Clicks: ${clicks}`;
-      const countryList = document.getElementById('country-list');
-      countryList.appendChild(countryElement);
-    })
-    .catch(error => {
-      console.error('Failed to save country:', error);
-    });
-};
-
-
-const handleSubmit = (event) => {
-  event.preventDefault();
+//   axios.post('/save_country', formData)
+//     .then(response => {
+//       const { country, clicks } = response.data;
+//       // Update UI with the received country and clicks data
+//       const countryElement = document.createElement('li');
+//       countryElement.textContent = `${country} - Clicks: ${clicks}`;
+//       const countryList = document.getElementById('country-list');
+//       countryList.appendChild(countryElement);
+//     })
+//     .catch(error => {
+//       console.error('Failed to save country:', error);
+//     });
+// };
 
 
-  const form = event.target;
-  const formData = new FormData(form);
+// const handleSubmit = (event) => {
+//   event.preventDefault();
 
 
-  saveCountry(formData);
-};
+//   const form = event.target;
+//   const formData = new FormData(form);
 
 
-const form = document.getElementById('country-form');
-form.addEventListener('submit', handleSubmit);
+//   saveCountry(formData);
+// };
+
+
+// const form = document.getElementById('country-form');
+// form.addEventListener('submit', handleSubmit);

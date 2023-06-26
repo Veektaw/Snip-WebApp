@@ -1,6 +1,8 @@
 from datetime import datetime
-from .utils import db, login_manager, bcrypt
+from .utils import db, login_manager, bcrypt, admin
 from flask_login import UserMixin
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -33,6 +35,7 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
         
     
 
@@ -82,6 +85,7 @@ class Url(db.Model):
         url_exists = cls.query.filter_by(short_url = url).first()
         return True if url_exists else False
     
+
     
     
 class Country(db.Model):

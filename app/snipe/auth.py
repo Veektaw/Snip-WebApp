@@ -1,12 +1,15 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, session
 from .models import Url, User
-from .utils import db, bcrypt, limiter, cache, login_manager
+from .utils import db, bcrypt, limiter, cache, login_manager, mail
 from app.helpers.view import URLCreator
 from flask_caching import Cache
 from flask_limiter import Limiter
 from sqlalchemy import desc
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_share import Share
+from flask_mail import Message
+from datetime import timedelta
 
 
 auth = Blueprint('auth', __name__)
@@ -77,12 +80,16 @@ def login():
         elif check_password_hash(user.password, password):
             flash(f'Success!! Welcome {email}')
             login_user(user)
+
+            session.permanent = True
+
             return redirect(url_for('snipe.home'))
         
         else:
             flash("Credentials do not match", category="error")
 
     return render_template('signin.html')
+
 
 
     
@@ -166,3 +173,45 @@ def profile(user_id):
 
     
     return render_template('profile.html', **context)
+
+
+# @auth.route('/forgot_password', methods=['GET', 'POST'])
+# def forgot_password():
+#     if request.method == 'POST':
+#         email = request.form['email']
+#         user = User.query.filter_by(email=email.lower()).first()
+#         link = request.host_url + "reset_password/" + email
+#         if user:
+#             try:
+#                 msg = Message('Reset Password', sender="admin@redr.site", recipients=[email])
+#                 msg.html = render_template('reset_mail.html', link=link)
+#                 mail.send(msg)
+#             except:
+#                 flash ("Reset password failed. Please try again.")
+#                 return redirect(url_for('login'))
+#             flash('Reset password link sent successfully. Please check your mail inbox or spam.')
+#             return redirect(url_for('login'))
+#         flash('Email not found.')
+#         return redirect(url_for('forgot_password'))
+#     return render_template('forgot_password.html')
+
+
+
+
+# @auth.route('/reset_password/<email>', methods=['GET', 'POST'])
+# def reset_password(email):
+#     user = User.query.filter_by(email=email).first()
+#     if user:
+#         if request.method == 'POST':
+#             password = request.form['password']
+#             confirm_password = request.form['confirm_password']
+#             if password == confirm_password:
+#                 user.password = generate_password_hash(password, method='sha256')
+#                 db.session.commit()
+#                 flash('Password reset successfully. Please login.')
+#                 return redirect(url_for('login'))
+#             else:
+#                 flash('Passwords do not match. Please try again.')
+#                 return redirect(url_for('reset_password', email=email))
+#         return render_template('reset_password.html', email=email)
+#     return 'Email not found.'
