@@ -1,4 +1,4 @@
-# Project Description: RedRoute URL Shortener
+# Project Description: Snip URL Shortener
 
 The Snip URL Shortener project is my take at a URL shortening service. The application will allow users to convert long URLs into shorter, more ones. The service will utilize cutting-edge technologies to ensure fast and reliable redirection, while also providing additional features such as link analytics and QR code generation.
 

@@ -13,6 +13,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from .auth import auth
 from .views import snipe
+import os
 from datetime import timedelta
 
 
@@ -44,10 +45,9 @@ def create_app(config_file='settings.py'):
     admin.add_view(ModelView(Url, db.session)) 
     admin.add_view(ModelView(Country, db.session))
     
+    storage_uri = os.environ.get('MEMCACHED_URI', '')
     
-    limiter = Limiter(key_func=get_remote_address, app=app,
-                  storage_uri="memcached://localhost:11211",
-                  storage_options={})
+    limiter = Limiter(key_func=get_remote_address, app=app, storage_uri=storage_uri, storage_options={})
 
     
     cache.init_app(app, config={'CACHE_TYPE': 'simple'}) 
