@@ -47,7 +47,7 @@ class Url(db.Model):
     
     id = db.Column(db.Integer(), primary_key=True)
     url = db.Column(db.String(512))
-    short_url = db.Column(db.String(5), unique=True)
+    short_url = db.Column(db.String(300), unique=True)
     custom_url = db.Column(db.String(50), unique=False)
     qr_code_url = db.Column(db.String(300), nullable=True, unique=False)
     url_title = db.Column(db.String(900), nullable=True, unique=False)
