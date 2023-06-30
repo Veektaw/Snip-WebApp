@@ -76,7 +76,7 @@ class URLCreator:
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or IP
             r'(?::\d+)?'  # optional port
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-        return (regex.match(url)) 
+        return url 
 
     @classmethod
     def extract_url_data(cls, url): 
