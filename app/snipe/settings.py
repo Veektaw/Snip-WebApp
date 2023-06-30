@@ -1,11 +1,11 @@
 import os
 from datetime import timedelta
 
-base_dir = os.path.abspath(os.path.dirname(__file__))
+# base_dir = os.path.abspath(os.path.dirname(__file__))
 
 
-# SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace("://", "ql://", 1)
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_dir,'snipe.db')
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace("://", "ql://", 1)
+# SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(base_dir,'snipe.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
 STORAGE_URI = os.environ.get('MEMCACHED_URI', '')
