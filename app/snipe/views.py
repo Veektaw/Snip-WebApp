@@ -99,6 +99,7 @@ def custom():
     if request.method == 'POST':
         url = request.form.get('url')
         custom_url_entry = request.form.get('custom_url_entry')
+        custom_url = None  # Assign a default value to custom_url
 
         existing_url = Url.query.filter_by(custom_url=custom_url_entry, user_id=current_user.email).first()
         if existing_url:
@@ -124,6 +125,7 @@ def custom():
                 return render_template('error.html')
 
         return redirect(url_for('snipe.home', custom_url_created=custom_url))
+
 
 
 
