@@ -20,7 +20,7 @@ def check_valid_url(url):
         r'(?::\d+)?'  # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
     
-    return bool(regex.match(url))
+    return (regex.match(url))
 
 
 class URLCreator:
