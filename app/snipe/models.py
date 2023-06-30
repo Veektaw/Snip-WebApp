@@ -4,6 +4,7 @@ from flask_login import UserMixin
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from werkzeug.security import generate_password_hash, check_password_hash
+import uuid
 
 
 
@@ -12,11 +13,12 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(320), unique=True)
     phone_number = db.Column(db.Text(), unique=True)
     password = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime(), default=datetime.now)
     url = db.relationship('Url', backref='user', lazy=True)
+
 
     def __repr__(self):
         return f"<User {self.email}>"
@@ -35,26 +37,23 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
-    
         
     
-
-
 
 class Url(db.Model):
     
     __tablename__  = 'urls'
     
     id = db.Column(db.Integer(), primary_key=True)
-    url = db.Column(db.String(512))
-    short_url = db.Column(db.String(300), unique=True)
+    url = db.Column(db.String(999))
+    short_url = db.Column(db.String(50), unique=True)
     custom_url = db.Column(db.String(50), unique=False)
-    qr_code_url = db.Column(db.String(300), nullable=True, unique=False)
+    qr_code_url = db.Column(db.String(), nullable=True, unique=False)
     url_title = db.Column(db.String(900), nullable=True, unique=False)
     clicks = db.Column(db.Integer(), default=0)
     date_created = db.Column(db.DateTime(), default=datetime.now)
     country_origin = db.relationship('Country', backref='countries', lazy=True)
-    user_id = db.Column(db.String(), db.ForeignKey('users.id'))
+    user_id = db.Column(db.String(), db.ForeignKey('users.email'))
 
     def __repr__(self):
         return f"<url {self.id}>"
@@ -81,8 +80,8 @@ class Url(db.Model):
         return Url.query.filter_by(creator = id).count() 
 
     @classmethod
-    def check_url(cls , url):
-        url_exists = cls.query.filter_by(short_url = url).first()
+    def check_url(cls, url):
+        url_exists = cls.query.filter_by(custom_url=url).first()
         return True if url_exists else False
     
 
@@ -95,7 +94,7 @@ class Country(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     country = db.Column(db.String(100), nullable=False)
     clicks = db.Column(db.Integer(), default=0)
-    url_id = db.Column(db.String(), db.ForeignKey('urls.id'))
+    url_id = db.Column(db.Integer(), db.ForeignKey('urls.id'))
     
     def __repr__(self):
         return f"<url {self.id}>"
