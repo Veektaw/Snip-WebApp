@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file, jsonify, abort
 from .models import Url, Country, User
 from .utils import db, bcrypt, limiter, cache, login_manager
 from sqlalchemy import desc
@@ -9,6 +9,7 @@ from flask_limiter.util import get_remote_address
 from flask_login import login_required, current_user
 import qrcode
 import io
+import base64
 
 
 snipe = Blueprint('snipe', __name__)
@@ -17,7 +18,10 @@ snipe = Blueprint('snipe', __name__)
 
 @snipe.route('/')
 def index():
-    return render_template('frontIndex.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('snipe.home'))
+    else:
+        return render_template('frontIndex.html')
 
 
 @snipe.route('/home')
@@ -28,11 +32,14 @@ def home():
     per_page = 5 
 
     urls = Url.query.filter_by(user_id=current_user.email).order_by(desc(Url.date_created)).paginate(page=page, per_page=per_page)
+    new_url = request.args.get('new_url')
+    custom_url_created = request.args.get('custom_url_created')
     context = {
         'urls': urls,
-        'new_url': request.args.get('new_url'),
-        'custom_url_created': request.args.get('custom_url_created'),
-    }
+        'new_url': new_url,
+        'custom_url_created': custom_url_created
+        }
+
     return render_template('home.html', **context)
 
 
@@ -65,10 +72,23 @@ def create():
             except:
                 db.session.rollback()
                 return render_template('error.html')
+            
 
-            return redirect(url_for('snipe.home', new_url=short_url))
+        return redirect(url_for('snipe.home', new_url=short_url))
+        
 
-    return render_template('create.html')
+
+
+@snipe.route('/<random_string_combination>')
+def redirect_to_original(random_string_combination):
+    short_url = f"http://{request.host}/{random_string_combination}"
+    url = Url.query.filter_by(short_url=short_url).first()
+    if url:
+        url.clicks += 1
+        url.save()
+        return redirect(url.url)
+    else:
+        abort(404)
 
 
 
@@ -76,24 +96,23 @@ def create():
 @limiter.limit("5 per minute")
 @login_required
 def custom():
-    
     if request.method == 'POST':
-        long_url = request.form.get('long_url')
+        url = request.form.get('url')
         custom_url_entry = request.form.get('custom_url_entry')
 
-        existing_url = Url.query.filter_by(url=long_url, user_id=current_user.email).first()
+        existing_url = Url.query.filter_by(custom_url=custom_url_entry, user_id=current_user.email).first()
         if existing_url:
             flash("Custom URL already exists", category="error")
             return redirect(url_for('snipe.home'))
 
-        if URLCreator.is_valid_url(long_url):
-            url_title = URLCreator.extract_url_data(long_url)
-            custom_url = URLCreator.custom_url(long_url, custom_url_entry)
+        if URLCreator.is_valid_url(url):
+            url_title = URLCreator.extract_url_data(url)
+            custom_url = f"http://{request.host}/{custom_url_entry}"
 
             custom_url_created = Url(
-                url=long_url,
+                url=url,
                 url_title=url_title,
-                custom_url=custom_url,
+                short_url=custom_url,
                 user_id=current_user.email
             )
 
@@ -104,10 +123,7 @@ def custom():
                 db.session.rollback()
                 return render_template('error.html')
 
-    return redirect(url_for('snipe.home', custom_url_created=custom_url))
-
-
-
+        return redirect(url_for('snipe.home', custom_url_created=custom_url))
 
 
 
@@ -146,13 +162,12 @@ def generate_qr_code_url(id):
     url = Url.get_by_id(id)
     
     if url:
-        
         img = qrcode.make(url.url)
         img_io = io.BytesIO()
         img.save(img_io, 'PNG')
         img_io.seek(0)
         
-        qr_code_data = img_io.getvalue() 
+        qr_code_data = base64.b64encode(img_io.getvalue()).decode('utf-8')
         
         url.qr_code_url = qr_code_data
         url.save()
@@ -161,20 +176,6 @@ def generate_qr_code_url(id):
     
     return 'URL not found.', 404
 
-
-
-@snipe.route('/click/<int:id>/', methods=['POST', 'GET'])
-@login_required
-def redirect_url(id):
-    
-    url = Url.query.get(id)
-    if url:
-        url.clicks += 1
-        url.save()
-        
-        return redirect(url.url)
-    
-    return 'URL not found.'
 
 
 @snipe.route('/save_country', methods=['POST'])
