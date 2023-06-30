@@ -2,11 +2,13 @@ import random
 import string
 from app.snipe.models import Url
 from flask import request 
-from urllib.error import URLError, HTTPError
 import re
 import qrcode
 import io
-
+import secrets
+from datetime import datetime  
+from ..snipe.utils import db
+from ..snipe.models import User
 
 def check_valid_url(url):
     
@@ -25,25 +27,43 @@ class URLCreator:
 
     @classmethod
     def short_url(cls, url):
-        characters_combinantion = string.ascii_letters + string.digits
-        random_string_combination = ''.join(random.choices(characters_combinantion, k=5))
-        new_url = f"https://{request.host}/{random_string_combination}"
-        does_url_exist = Url.check_url(new_url)
-        
-        if does_url_exist: 
-            URLCreator.short_url()
-        return new_url
+        characters_combination = string.ascii_letters + string.digits
+        random_string_combination = ''.join(random.choices(characters_combination, k=5))
+        short_url = f"http://{request.host}/{random_string_combination}"
+        does_url_exist = Url.check_url(short_url)
+
+        if does_url_exist:
+            return cls.short_url(url)
+
+        return short_url
     
     
     @classmethod
-    def custom_url(cls, long_url, custom_url_entry):
-            custom_url = f"https://{request.host}/{custom_url_entry}"
-            does_url_exist = Url.check_url(custom_url)
+    def generate_custom_url_entry(cls, custom_url_entry):
+        existing_url = Url.query.filter_by(custom_url=custom_url_entry).first()
+        if existing_url:
+       
+            return cls.generate_custom_url_entry(custom_url_entry)
+        else:
         
-            if does_url_exist:
-                URLCreator.custom_url()
-        
-            return custom_url
+         return custom_url_entry
+
+    
+    
+    @classmethod
+    def custom_url(cls, url, custom_url_entry):
+        custom_url = f"http://{request.host}/{cls.generate_custom_url_entry(custom_url_entry)}"
+        does_url_exist = Url.check_url(custom_url)
+
+        if does_url_exist:
+            return cls.custom_url(url, custom_url_entry)
+
+        return custom_url
+
+
+
+
+
     
 
     @classmethod
@@ -62,19 +82,19 @@ class URLCreator:
     def extract_url_data(cls, url): 
         from bs4 import BeautifulSoup
         import requests
-        # Make a GET request to the URL
+        
         response = requests.get(url)
 
-        # Parse the HTML content of the page using BeautifulSoup
+        
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Extract the title of the page
+        
         try:
             title = soup.title.string
         except:
             title = ''
 
-        # Extract the description of the page
+        
         return title
 
 
